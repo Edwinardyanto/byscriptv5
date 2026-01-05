@@ -382,27 +382,32 @@
         padding: 20px 20px 12px;
         border-bottom: 1px solid rgba(255, 255, 255, 0.08);
         display: flex;
-        align-items: flex-start;
-        justify-content: space-between;
+        align-items: center;
+        justify-content: center;
         gap: 12px;
+        position: relative;
       }
 
       .page-autotrader-config .drawer-title {
         font-size: 1.05rem;
         font-weight: 600;
+        text-align: center;
+        color: var(--color-text);
       }
 
       .page-autotrader-config .drawer-subtitle {
         font-size: 0.85rem;
-        color: rgba(232, 227, 243, 0.6);
+        color: var(--color-muted);
       }
 
       .page-autotrader-config .drawer-close {
         border: none;
         background: transparent;
-        color: rgba(232, 227, 243, 0.7);
+        color: var(--color-muted);
         font-size: 1.2rem;
         cursor: pointer;
+        position: absolute;
+        right: 16px;
       }
 
       .page-autotrader-config .drawer-body {
@@ -421,7 +426,7 @@
         font-size: 0.85rem;
         text-transform: uppercase;
         letter-spacing: 0.1em;
-        color: rgba(232, 227, 243, 0.55);
+        color: var(--color-muted);
       }
 
       .page-autotrader-config .drawer-input {
@@ -434,7 +439,7 @@
 
       .page-autotrader-config .drawer-helper {
         font-size: 0.78rem;
-        color: rgba(232, 227, 243, 0.6);
+        color: var(--color-muted);
       }
 
       .page-autotrader-config .pair-universe {
@@ -454,6 +459,7 @@
         border: 1px solid rgba(255, 255, 255, 0.08);
         background: rgba(255, 255, 255, 0.04);
         font-size: 0.85rem;
+        color: var(--color-text);
       }
 
       .page-autotrader-config .drawer-footer {
@@ -477,9 +483,6 @@
       <header class="section section--header section-header">
         <div class="section-header">
           <h1 class="section-title">Autotrader Configurator</h1>
-        </div>
-        <div class="section-body">
-          <span class="section-subtitle" id="configurator-subtitle">Create New Autotrader</span>
         </div>
       </header>
       <aside>
@@ -659,10 +662,7 @@
     </div>
     <aside class="trading-plan-drawer" id="trading-plan-drawer" aria-hidden="true">
       <div class="drawer-header">
-        <div>
-          <div class="drawer-title">Create Trading Plan</div>
-          <div class="drawer-subtitle">Define the pair universe for your autotraders</div>
-        </div>
+        <div class="drawer-title">Create Trading Plan</div>
         <button class="drawer-close" type="button" id="close-plan-drawer" aria-label="Close">×</button>
       </div>
       <div class="drawer-body">
@@ -777,7 +777,6 @@
         capitalValidation: document.getElementById("capital-validation"),
         leverageValidation: document.getElementById("leverage-validation"),
         footerTitle: document.getElementById("footer-title"),
-        subtitle: document.getElementById("configurator-subtitle"),
         openPlanDrawer: document.getElementById("open-plan-drawer"),
         planDrawer: document.getElementById("trading-plan-drawer"),
         closePlanDrawer: document.getElementById("close-plan-drawer"),
@@ -798,17 +797,14 @@
 
       const modeCopy = {
         create: {
-          subtitle: "Create New Autotrader",
           footerTitle: "Ready to create new autotraders?",
           submitLabel: "Create Autotrader",
         },
         edit: {
-          subtitle: "Edit Autotrader",
           footerTitle: "Update this autotrader configuration.",
           submitLabel: "Save Changes",
         },
         clone: {
-          subtitle: "Clone Autotrader",
           footerTitle: "Clone settings into a new autotrader set.",
           submitLabel: "Create Clone",
         },
@@ -816,7 +812,6 @@
 
       const resolveModeCopy = () => {
         const copy = modeCopy[mode] || modeCopy.create;
-        elements.subtitle.textContent = copy.subtitle;
         elements.footerTitle.textContent = copy.footerTitle;
         elements.submitButton.textContent = copy.submitLabel;
       };
