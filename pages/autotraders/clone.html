@@ -445,6 +445,49 @@
       .page-autotrader-config .pair-universe {
         display: grid;
         gap: 8px;
+      }
+
+      .page-autotrader-config .pair-selected-row {
+        display: flex;
+        gap: 8px;
+        overflow-x: auto;
+        padding-bottom: 6px;
+        scrollbar-width: thin;
+      }
+
+      .page-autotrader-config .pair-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 10px;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        background: rgba(255, 255, 255, 0.08);
+        color: var(--color-text);
+        font-size: 0.75rem;
+        white-space: nowrap;
+      }
+
+      .page-autotrader-config .pair-chip button {
+        border: none;
+        background: transparent;
+        color: var(--color-muted);
+        cursor: pointer;
+        font-size: 0.85rem;
+        line-height: 1;
+      }
+
+      .page-autotrader-config .pair-search {
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 10px;
+        padding: 8px 10px;
+        color: var(--color-text);
+      }
+
+      .page-autotrader-config .pair-list {
+        display: grid;
+        gap: 6px;
         max-height: 220px;
         overflow-y: auto;
         padding-right: 4px;
@@ -460,6 +503,26 @@
         background: rgba(255, 255, 255, 0.04);
         font-size: 0.85rem;
         color: var(--color-text);
+        cursor: pointer;
+        transition: border-color 0.2s ease, background 0.2s ease;
+      }
+
+      .page-autotrader-config .pair-option.is-selected {
+        border-color: rgba(200, 242, 107, 0.5);
+        background: rgba(200, 242, 107, 0.12);
+      }
+
+      .page-autotrader-config .pair-icon {
+        width: 28px;
+        height: 28px;
+        border-radius: 8px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(255, 255, 255, 0.08);
+        color: var(--color-text);
+        font-size: 0.7rem;
+        font-weight: 600;
       }
 
       .page-autotrader-config .drawer-footer {
@@ -682,7 +745,11 @@
         </div>
         <div class="drawer-section">
           <div class="drawer-section-title">Pair Universe Selection</div>
-          <div class="pair-universe" id="pair-universe-list"></div>
+          <div class="pair-universe">
+            <div class="pair-selected-row" id="pair-selected-row"></div>
+            <input class="pair-search" type="text" id="pair-search-input" placeholder="Search pairs" />
+            <div class="pair-list" id="pair-universe-list"></div>
+          </div>
           <div class="drawer-helper">
             Only these pairs will be available when creating autotraders using this plan.
           </div>
@@ -785,6 +852,8 @@
         planNameInput: document.getElementById("plan-name-input"),
         planMarketButtons: document.querySelectorAll("[data-plan-market]"),
         pairUniverseList: document.getElementById("pair-universe-list"),
+        pairSelectedRow: document.getElementById("pair-selected-row"),
+        pairSearchInput: document.getElementById("pair-search-input"),
       };
 
       const drawerState = {
@@ -1077,15 +1146,40 @@
         });
 
         const options = availablePairs[drawerState.market] || [];
+        const searchTerm = elements.pairSearchInput.value.trim().toLowerCase();
+        const filteredOptions = options.filter((pair) => pair.toLowerCase().includes(searchTerm));
+        elements.pairSelectedRow.innerHTML = "";
+        if (drawerState.selectedPairs.length) {
+          drawerState.selectedPairs.forEach((pair) => {
+            const chip = document.createElement("div");
+            chip.className = "pair-chip";
+            chip.innerHTML = `
+              <span>${pair}</span>
+              <button type="button" aria-label="Remove ${pair}" data-remove-pair="${pair}">×</button>
+            `;
+            elements.pairSelectedRow.appendChild(chip);
+          });
+        } else {
+          const emptyChip = document.createElement("span");
+          emptyChip.className = "helper-text";
+          emptyChip.textContent = "Select at least one pair.";
+          elements.pairSelectedRow.appendChild(emptyChip);
+        }
+
         elements.pairUniverseList.innerHTML = "";
-        options.forEach((pair) => {
-          const label = document.createElement("label");
-          label.className = "pair-option";
-          label.innerHTML = `
-            <input type="checkbox" value="${pair}" ${drawerState.selectedPairs.includes(pair) ? "checked" : ""} />
+        filteredOptions.forEach((pair) => {
+          const row = document.createElement("div");
+          row.className = "pair-option";
+          if (drawerState.selectedPairs.includes(pair)) {
+            row.classList.add("is-selected");
+          }
+          const symbol = pair.split("/")[0] || pair;
+          row.innerHTML = `
+            <span class="pair-icon">${symbol.slice(0, 3).toUpperCase()}</span>
             <span>${pair}</span>
           `;
-          elements.pairUniverseList.appendChild(label);
+          row.addEventListener("click", () => togglePairSelection(pair));
+          elements.pairUniverseList.appendChild(row);
         });
 
         elements.savePlanDrawer.disabled = !drawerState.name.trim() || drawerState.selectedPairs.length === 0;
@@ -1108,6 +1202,15 @@
         autotraderConfig.tradingPlan = newPlan;
         closePlanDrawer();
         render();
+      };
+
+      const togglePairSelection = (pair) => {
+        if (drawerState.selectedPairs.includes(pair)) {
+          drawerState.selectedPairs = drawerState.selectedPairs.filter((item) => item !== pair);
+        } else {
+          drawerState.selectedPairs = [...drawerState.selectedPairs, pair];
+        }
+        renderPlanDrawer();
       };
 
       const render = () => {
@@ -1136,26 +1239,28 @@
         renderPlanDrawer();
       });
 
+      elements.pairSearchInput.addEventListener("input", () => {
+        renderPlanDrawer();
+      });
+
       elements.planMarketButtons.forEach((button) => {
         button.addEventListener("click", () => {
           drawerState.market = button.dataset.planMarket;
           drawerState.selectedPairs = [];
+          elements.pairSearchInput.value = "";
           renderPlanDrawer();
         });
       });
 
-      elements.pairUniverseList.addEventListener("change", (event) => {
+      elements.pairSelectedRow.addEventListener("click", (event) => {
         const target = event.target;
-        if (!(target instanceof HTMLInputElement)) {
+        if (!(target instanceof HTMLButtonElement)) {
           return;
         }
-        const value = target.value;
-        if (target.checked) {
-          drawerState.selectedPairs = [...drawerState.selectedPairs, value];
-        } else {
-          drawerState.selectedPairs = drawerState.selectedPairs.filter((pair) => pair !== value);
+        const value = target.dataset.removePair;
+        if (value) {
+          togglePairSelection(value);
         }
-        renderPlanDrawer();
       });
 
       elements.pairsBody.addEventListener("input", (event) => {
