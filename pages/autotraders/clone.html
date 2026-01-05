@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Autotrader Clone | ByScript</title>
+    <link rel="stylesheet" href="../../src/styles/color-tokens.css">
+    <link rel="stylesheet" href="../../src/styles/main.css">
+    <style>
+      .page-autotrader-config .section--header {
+        display: grid;
+        gap: 6px;
+      }
+
+      .page-autotrader-config .section-title {
+        font-size: 1.6rem;
+      }
+
+      .page-autotrader-config .section-subtitle {
+        color: var(--color-muted);
+        font-size: 0.95rem;
+      }
+
+      .page-autotrader-config .configurator-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1.35fr) minmax(0, 0.9fr);
+        gap: 20px;
+        align-items: start;
+      }
+
+      .page-autotrader-config .config-panel,
+      .page-autotrader-config .summary-panel {
+        background: rgba(21, 18, 30, 0.75);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-lg);
+        padding: 18px;
+        box-shadow: var(--shadow-soft);
+      }
+
+      .page-autotrader-config .config-section + .config-section {
+        margin-top: 18px;
+        padding-top: 18px;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+      }
+
+      .page-autotrader-config .config-section-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 12px;
+      }
+
+      .page-autotrader-config .config-section-title {
+        font-size: 1rem;
+        font-weight: 600;
+      }
+
+      .page-autotrader-config .config-section-description {
+        color: rgba(232, 227, 243, 0.6);
+        font-size: 0.85rem;
+      }
+
+      .page-autotrader-config .toggle-group {
+        display: inline-flex;
+        gap: 8px;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 999px;
+        padding: 4px;
+      }
+
+      .page-autotrader-config .toggle-button {
+        border: 1px solid transparent;
+        background: transparent;
+        color: var(--color-muted);
+        border-radius: 999px;
+        padding: 6px 16px;
+        cursor: pointer;
+        font-weight: 600;
+      }
+
+      .page-autotrader-config .toggle-button.active {
+        border-color: rgba(255, 255, 255, 0.2);
+        color: var(--color-text);
+        background: rgba(255, 255, 255, 0.08);
+      }
+
+      .page-autotrader-config .exchange-grid,
+      .page-autotrader-config .trading-plan-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 12px;
+      }
+
+      .page-autotrader-config .exchange-card,
+      .page-autotrader-config .trading-plan-card {
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: var(--radius-md);
+        background: rgba(255, 255, 255, 0.03);
+        padding: 12px;
+        display: grid;
+        gap: 8px;
+        cursor: pointer;
+        transition: border-color 0.2s ease, background 0.2s ease;
+      }
+
+      .page-autotrader-config .exchange-card.selected,
+      .page-autotrader-config .trading-plan-card.selected {
+        border-color: rgba(232, 227, 243, 0.45);
+        background: rgba(255, 255, 255, 0.08);
+      }
+
+      .page-autotrader-config .exchange-card-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+      }
+
+      .page-autotrader-config .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 2px 8px;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        font-size: 0.7rem;
+        color: var(--color-muted);
+      }
+
+      .page-autotrader-config .status-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.3);
+      }
+
+      .page-autotrader-config .status-dot.connected {
+        background: rgba(200, 242, 107, 0.7);
+      }
+
+      .page-autotrader-config .muted-button {
+        border-radius: 999px;
+        padding: 6px 12px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: rgba(255, 255, 255, 0.05);
+        color: var(--color-text);
+        font-weight: 600;
+        cursor: pointer;
+      }
+
+      .page-autotrader-config .pairs-table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      .page-autotrader-config .pairs-table th,
+      .page-autotrader-config .pairs-table td {
+        text-align: left;
+        padding: 10px 8px;
+        font-size: 0.82rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      }
+
+      .page-autotrader-config .pairs-table th {
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: rgba(232, 227, 243, 0.6);
+        font-size: 0.7rem;
+      }
+
+      .page-autotrader-config .table-input,
+      .page-autotrader-config .table-select {
+        width: 100%;
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 8px;
+        color: var(--color-text);
+        padding: 6px 8px;
+        font-size: 0.8rem;
+      }
+
+      .page-autotrader-config .table-action {
+        border: none;
+        background: none;
+        color: rgba(255, 255, 255, 0.6);
+        cursor: pointer;
+      }
+
+      .page-autotrader-config .pairs-actions {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 10px;
+      }
+
+      .page-autotrader-config .helper-text {
+        color: rgba(232, 227, 243, 0.6);
+        font-size: 0.75rem;
+      }
+
+      .page-autotrader-config .capital-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 12px;
+      }
+
+      .page-autotrader-config .field-group {
+        display: grid;
+        gap: 6px;
+      }
+
+      .page-autotrader-config .field-label {
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: rgba(232, 227, 243, 0.55);
+      }
+
+      .page-autotrader-config .field-input {
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 10px;
+        padding: 8px 10px;
+        color: var(--color-text);
+      }
+
+      .page-autotrader-config .validation-text {
+        font-size: 0.72rem;
+        color: rgba(255, 163, 163, 0.9);
+      }
+
+      .page-autotrader-config .summary-panel {
+        position: sticky;
+        top: 90px;
+      }
+
+      .page-autotrader-config .summary-header {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        margin-bottom: 16px;
+      }
+
+      .page-autotrader-config .summary-title {
+        font-size: 1.05rem;
+        font-weight: 600;
+      }
+
+      .page-autotrader-config .summary-meta {
+        color: rgba(232, 227, 243, 0.6);
+        font-size: 0.8rem;
+      }
+
+      .page-autotrader-config .summary-list {
+        display: grid;
+        gap: 12px;
+      }
+
+      .page-autotrader-config .summary-item {
+        display: grid;
+        gap: 4px;
+      }
+
+      .page-autotrader-config .summary-label {
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: rgba(232, 227, 243, 0.55);
+      }
+
+      .page-autotrader-config .summary-value {
+        font-size: 0.9rem;
+      }
+
+      .page-autotrader-config .summary-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+
+      .page-autotrader-config .summary-tag {
+        padding: 4px 10px;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        font-size: 0.75rem;
+        color: rgba(232, 227, 243, 0.8);
+        background: rgba(255, 255, 255, 0.05);
+      }
+
+      .page-autotrader-config .configurator-footer {
+        margin-top: 18px;
+        padding: 16px 18px;
+        border-radius: var(--radius-lg);
+        background: rgba(15, 12, 24, 0.8);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+      }
+
+      .page-autotrader-config .footer-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .page-autotrader-config .primary-button {
+        border-radius: 999px;
+        padding: 8px 18px;
+        border: 1px solid rgba(200, 242, 107, 0.6);
+        background: rgba(200, 242, 107, 0.2);
+        color: var(--color-text);
+        font-weight: 700;
+        cursor: pointer;
+        box-shadow: none;
+      }
+
+      .page-autotrader-config .primary-button:disabled {
+        cursor: not-allowed;
+        opacity: 0.6;
+      }
+
+      .page-autotrader-config .outline-button {
+        border-radius: 999px;
+        padding: 8px 18px;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        background: transparent;
+        color: var(--color-text);
+        font-weight: 600;
+        cursor: pointer;
+      }
+
+      .page-autotrader-config .empty-state {
+        padding: 14px;
+        border-radius: 12px;
+        border: 1px dashed rgba(255, 255, 255, 0.12);
+        color: rgba(232, 227, 243, 0.6);
+        font-size: 0.85rem;
+      }
+
+      @media (max-width: 1100px) {
+        .page-autotrader-config .configurator-layout {
+          grid-template-columns: 1fr;
+        }
+
+        .page-autotrader-config .summary-panel {
+          position: static;
+        }
+
+        .page-autotrader-config .configurator-footer {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+      }
+
+      .page-autotrader-config .trading-plan-drawer {
+        position: fixed;
+        top: 0;
+        right: 0;
+        height: 100vh;
+        width: min(460px, 92vw);
+        background: rgba(20, 16, 30, 0.98);
+        border-left: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow: var(--shadow-soft);
+        transform: translateX(100%);
+        transition: transform 0.25s ease;
+        display: grid;
+        grid-template-rows: auto 1fr auto;
+        z-index: 10;
+        pointer-events: none;
+      }
+
+      .page-autotrader-config .trading-plan-drawer.is-open {
+        transform: translateX(0);
+        pointer-events: auto;
+      }
+
+      .page-autotrader-config .drawer-header {
+        padding: 20px 20px 12px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .page-autotrader-config .drawer-title {
+        font-size: 1.05rem;
+        font-weight: 600;
+      }
+
+      .page-autotrader-config .drawer-subtitle {
+        font-size: 0.85rem;
+        color: rgba(232, 227, 243, 0.6);
+      }
+
+      .page-autotrader-config .drawer-close {
+        border: none;
+        background: transparent;
+        color: rgba(232, 227, 243, 0.7);
+        font-size: 1.2rem;
+        cursor: pointer;
+      }
+
+      .page-autotrader-config .drawer-body {
+        padding: 18px 20px;
+        overflow-y: auto;
+        display: grid;
+        gap: 18px;
+      }
+
+      .page-autotrader-config .drawer-section {
+        display: grid;
+        gap: 8px;
+      }
+
+      .page-autotrader-config .drawer-section-title {
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: rgba(232, 227, 243, 0.55);
+      }
+
+      .page-autotrader-config .drawer-input {
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 10px;
+        padding: 10px 12px;
+        color: var(--color-text);
+      }
+
+      .page-autotrader-config .drawer-helper {
+        font-size: 0.78rem;
+        color: rgba(232, 227, 243, 0.6);
+      }
+
+      .page-autotrader-config .pair-universe {
+        display: grid;
+        gap: 8px;
+        max-height: 220px;
+        overflow-y: auto;
+        padding-right: 4px;
+      }
+
+      .page-autotrader-config .pair-option {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 10px;
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: rgba(255, 255, 255, 0.04);
+        font-size: 0.85rem;
+      }
+
+      .page-autotrader-config .drawer-footer {
+        padding: 16px 20px;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        background: rgba(15, 12, 24, 0.92);
+      }
+    </style>
+  </head>
+  <body class="page-autotrader-config" data-mode="clone">
+    <div id="app" class="app">
+      <button class="sidebar-toggle" type="button" aria-label="Toggle sidebar" aria-expanded="true">
+        <span class="sidebar-toggle-line"></span>
+        <span class="sidebar-toggle-line"></span>
+        <span class="sidebar-toggle-line"></span>
+      </button>
+      <header class="section section--header section-header">
+        <div class="section-header">
+          <h1 class="section-title">Autotrader Configurator</h1>
+        </div>
+        <div class="section-body">
+          <span class="section-subtitle" id="configurator-subtitle">Create New Autotrader</span>
+        </div>
+      </header>
+      <aside>
+        <nav class="sidebar" aria-label="Primary">
+          <div class="sidebar-header">
+            <div class="sidebar-logo" aria-hidden="true">B</div>
+            <span class="sidebar-logo-text">ByScript</span>
+          </div>
+          <ul>
+            <li>
+              <a class="sidebar-item" href="../../index.html">
+                <span class="sidebar-icon"></span>
+                <span class="sidebar-label">Dashboard</span>
+              </a>
+            </li>
+            <li>
+              <a class="sidebar-item sidebar-item--active" href="../autotraders.html">
+                <span class="sidebar-icon"></span>
+                <span class="sidebar-label">Autotraders</span>
+              </a>
+            </li>
+            <li>
+              <a class="sidebar-item" href="../exchanges.html">
+                <span class="sidebar-icon"></span>
+                <span class="sidebar-label">Exchanges</span>
+              </a>
+            </li>
+            <li>
+              <a class="sidebar-item" href="../activity.html">
+                <span class="sidebar-icon"></span>
+                <span class="sidebar-label">Activity</span>
+              </a>
+            </li>
+            <li>
+              <a class="sidebar-item" href="../backtest.html">
+                <span class="sidebar-icon"></span>
+                <span class="sidebar-label">Strategy Backtest</span>
+              </a>
+            </li>
+            <li>
+              <a class="sidebar-item" href="../affiliate.html">
+                <span class="sidebar-icon"></span>
+                <span class="sidebar-label">Affiliate</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </aside>
+      <div class="content">
+        <main class="main">
+          <div class="configurator-layout">
+            <section class="config-panel">
+              <div class="config-section" id="section-market">
+                <div class="config-section-header">
+                  <div>
+                    <div class="config-section-title">Market</div>
+                    <div class="config-section-description">Choose the market type for this configuration.</div>
+                  </div>
+                  <div class="toggle-group" role="group" aria-label="Market type">
+                    <button class="toggle-button" type="button" data-market="Spot">Spot</button>
+                    <button class="toggle-button" type="button" data-market="Futures">Futures</button>
+                  </div>
+                </div>
+              </div>
+              <div class="config-section" id="section-exchange">
+                <div class="config-section-header">
+                  <div>
+                    <div class="config-section-title">Exchange</div>
+                    <div class="config-section-description">Select an exchange compatible with the chosen market.</div>
+                  </div>
+                  <button class="muted-button" type="button">Connect New Exchange</button>
+                </div>
+                <div class="exchange-grid" id="exchange-grid"></div>
+                <div class="empty-state" id="exchange-empty">Select a market to view available exchanges.</div>
+              </div>
+              <div class="config-section" id="section-trading-plan">
+                <div class="config-section-header">
+                  <div>
+                    <div class="config-section-title">Trading Plan</div>
+                    <div class="config-section-description">Pick a plan that matches your execution style.</div>
+                  </div>
+                  <button class="muted-button" type="button" id="open-plan-drawer">Create Trading Plan</button>
+                </div>
+                <div class="trading-plan-grid" id="plan-grid"></div>
+                <div class="empty-state" id="plan-empty">Select a market to view trading plans.</div>
+              </div>
+              <div class="config-section" id="section-pairs">
+                <div class="config-section-header">
+                  <div>
+                    <div class="config-section-title">Pairs Configuration</div>
+                    <div class="config-section-description">Each pair represents an individual autotrader instance.</div>
+                  </div>
+                </div>
+                <table class="pairs-table">
+                  <thead>
+                    <tr>
+                      <th>Pair</th>
+                      <th>Trade Amount (USD)</th>
+                      <th>Leverage</th>
+                      <th>Leverage Type</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody id="pairs-body"></tbody>
+                </table>
+                <div class="pairs-actions">
+                  <span class="helper-text" id="pairs-helper">Add pairs to spin up new autotraders.</span>
+                  <button class="muted-button" type="button" id="add-pair">Add Pair</button>
+                </div>
+              </div>
+              <div class="config-section" id="section-capital">
+                <div class="config-section-header">
+                  <div>
+                    <div class="config-section-title">Capital & Leverage</div>
+                    <div class="config-section-description">Adjust portfolio-wide values with inline validation only.</div>
+                  </div>
+                </div>
+                <div class="capital-grid">
+                  <div class="field-group">
+                    <label class="field-label" for="capital-amount">Apply Trade Amount (USD)</label>
+                    <input class="field-input" id="capital-amount" type="number" min="0" step="100" placeholder="e.g. 2500" />
+                    <span class="validation-text" id="capital-validation"></span>
+                  </div>
+                  <div class="field-group">
+                    <label class="field-label" for="capital-leverage">Apply Default Leverage</label>
+                    <input class="field-input" id="capital-leverage" type="number" min="1" max="100" step="1" placeholder="e.g. 5" />
+                    <span class="validation-text" id="leverage-validation"></span>
+                  </div>
+                </div>
+              </div>
+            </section>
+            <aside class="summary-panel">
+              <div class="summary-header">
+                <span class="summary-title">Autotrader Preview</span>
+                <span class="summary-meta">Live summary of the configuration</span>
+              </div>
+              <div class="summary-list" id="summary-list">
+                <div class="summary-item">
+                  <span class="summary-label">Market</span>
+                  <span class="summary-value" id="summary-market">—</span>
+                </div>
+                <div class="summary-item">
+                  <span class="summary-label">Exchange</span>
+                  <span class="summary-value" id="summary-exchange">—</span>
+                </div>
+                <div class="summary-item">
+                  <span class="summary-label">Trading Plan</span>
+                  <span class="summary-value" id="summary-plan">—</span>
+                </div>
+                <div class="summary-item">
+                  <span class="summary-label">Number of Autotraders</span>
+                  <span class="summary-value" id="summary-count">0</span>
+                </div>
+                <div class="summary-item">
+                  <span class="summary-label">Total Capital</span>
+                  <span class="summary-value" id="summary-capital">$0</span>
+                </div>
+                <div class="summary-item">
+                  <span class="summary-label">Pairs</span>
+                  <div class="summary-tags" id="summary-pairs"></div>
+                </div>
+              </div>
+            </aside>
+          </div>
+          <footer class="configurator-footer">
+            <div>
+              <div class="config-section-title" id="footer-title">Ready to create new autotraders?</div>
+              <div class="config-section-description">Changes reflect instantly on the right-hand preview.</div>
+            </div>
+            <div class="footer-actions">
+              <button class="outline-button" type="button" id="cancel-config">Cancel</button>
+              <button class="primary-button" type="button" id="submit-config">Create Autotrader</button>
+            </div>
+          </footer>
+        </main>
+      </div>
+    </div>
+    <aside class="trading-plan-drawer" id="trading-plan-drawer" aria-hidden="true">
+      <div class="drawer-header">
+        <div>
+          <div class="drawer-title">Create Trading Plan</div>
+          <div class="drawer-subtitle">Define the pair universe for your autotraders</div>
+        </div>
+        <button class="drawer-close" type="button" id="close-plan-drawer" aria-label="Close">×</button>
+      </div>
+      <div class="drawer-body">
+        <div class="drawer-section">
+          <div class="drawer-section-title">Plan Basics</div>
+          <input class="drawer-input" type="text" id="plan-name-input" placeholder="Plan name" />
+          <div class="drawer-helper">
+            Trading Plans define which pairs can be used when creating autotraders.
+          </div>
+        </div>
+        <div class="drawer-section">
+          <div class="drawer-section-title">Market Compatibility</div>
+          <div class="toggle-group" role="group" aria-label="Trading plan market">
+            <button class="toggle-button" type="button" data-plan-market="Spot">Spot</button>
+            <button class="toggle-button" type="button" data-plan-market="Futures">Futures</button>
+          </div>
+        </div>
+        <div class="drawer-section">
+          <div class="drawer-section-title">Pair Universe Selection</div>
+          <div class="pair-universe" id="pair-universe-list"></div>
+          <div class="drawer-helper">
+            Only these pairs will be available when creating autotraders using this plan.
+          </div>
+        </div>
+      </div>
+      <div class="drawer-footer">
+        <button class="outline-button" type="button" id="cancel-plan-drawer">Cancel</button>
+        <button class="primary-button" type="button" id="save-plan-drawer">Save Trading Plan</button>
+      </div>
+    </aside>
+    <script type="module" src="../../src/scripts/main.js"></script>
+    <script type="module">
+      const autotraderConfig = {
+        market: null,
+        exchange: null,
+        tradingPlan: null,
+        pairs: [],
+      };
+
+      const exchangeOptions = [
+        { id: "binance", name: "Binance", market: "Spot", status: "Connected" },
+        { id: "coinbase", name: "Coinbase Prime", market: "Spot", status: "Connected" },
+        { id: "kraken", name: "Kraken", market: "Spot", status: "Disconnected" },
+        { id: "binance-futures", name: "Binance Futures", market: "Futures", status: "Connected" },
+        { id: "bybit", name: "Bybit", market: "Futures", status: "Connected" },
+        { id: "okx", name: "OKX", market: "Futures", status: "Disconnected" },
+      ];
+
+      let tradingPlans = [
+        {
+          id: "momentum-spot",
+          name: "Momentum Core",
+          market: "Spot",
+          leverageType: "No Leverage",
+          defaultLeverage: "1x",
+          pairs: "Top 10",
+          allowedPairs: ["BTC/USDT", "ETH/USDT", "SOL/USDT", "AVAX/USDT"],
+        },
+        {
+          id: "mean-reversion-spot",
+          name: "Mean Reversion",
+          market: "Spot",
+          leverageType: "No Leverage",
+          defaultLeverage: "1x",
+          pairs: "Top 25",
+          allowedPairs: ["BTC/USDT", "ETH/USDT", "SOL/USDT", "AVAX/USDT"],
+        },
+        {
+          id: "momentum-futures",
+          name: "Momentum Turbo",
+          market: "Futures",
+          leverageType: "Cross",
+          defaultLeverage: "5x",
+          pairs: "Top 15",
+          allowedPairs: ["BTC/USDT Perp", "ETH/USDT Perp", "SOL/USDT Perp", "BNB/USDT Perp"],
+        },
+        {
+          id: "hedged-futures",
+          name: "Hedged Breakout",
+          market: "Futures",
+          leverageType: "Isolated",
+          defaultLeverage: "3x",
+          pairs: "Top 8",
+          allowedPairs: ["BTC/USDT Perp", "ETH/USDT Perp", "SOL/USDT Perp", "BNB/USDT Perp"],
+        },
+      ];
+
+      const availablePairs = {
+        Spot: ["BTC/USDT", "ETH/USDT", "SOL/USDT", "AVAX/USDT"],
+        Futures: ["BTC/USDT Perp", "ETH/USDT Perp", "SOL/USDT Perp", "BNB/USDT Perp"],
+      };
+
+      const elements = {
+        toggleButtons: document.querySelectorAll(".toggle-button"),
+        exchangeGrid: document.getElementById("exchange-grid"),
+        exchangeEmpty: document.getElementById("exchange-empty"),
+        planGrid: document.getElementById("plan-grid"),
+        planEmpty: document.getElementById("plan-empty"),
+        pairsBody: document.getElementById("pairs-body"),
+        addPairButton: document.getElementById("add-pair"),
+        pairsHelper: document.getElementById("pairs-helper"),
+        summaryMarket: document.getElementById("summary-market"),
+        summaryExchange: document.getElementById("summary-exchange"),
+        summaryPlan: document.getElementById("summary-plan"),
+        summaryCount: document.getElementById("summary-count"),
+        summaryCapital: document.getElementById("summary-capital"),
+        summaryPairs: document.getElementById("summary-pairs"),
+        cancelButton: document.getElementById("cancel-config"),
+        submitButton: document.getElementById("submit-config"),
+        capitalAmount: document.getElementById("capital-amount"),
+        capitalLeverage: document.getElementById("capital-leverage"),
+        capitalValidation: document.getElementById("capital-validation"),
+        leverageValidation: document.getElementById("leverage-validation"),
+        footerTitle: document.getElementById("footer-title"),
+        subtitle: document.getElementById("configurator-subtitle"),
+        openPlanDrawer: document.getElementById("open-plan-drawer"),
+        planDrawer: document.getElementById("trading-plan-drawer"),
+        closePlanDrawer: document.getElementById("close-plan-drawer"),
+        cancelPlanDrawer: document.getElementById("cancel-plan-drawer"),
+        savePlanDrawer: document.getElementById("save-plan-drawer"),
+        planNameInput: document.getElementById("plan-name-input"),
+        planMarketButtons: document.querySelectorAll("[data-plan-market]"),
+        pairUniverseList: document.getElementById("pair-universe-list"),
+      };
+
+      const drawerState = {
+        name: "",
+        market: "Spot",
+        selectedPairs: [],
+      };
+
+      const mode = document.body.dataset.mode || "create";
+
+      const modeCopy = {
+        create: {
+          subtitle: "Create New Autotrader",
+          footerTitle: "Ready to create new autotraders?",
+          submitLabel: "Create Autotrader",
+        },
+        edit: {
+          subtitle: "Edit Autotrader",
+          footerTitle: "Update this autotrader configuration.",
+          submitLabel: "Save Changes",
+        },
+        clone: {
+          subtitle: "Clone Autotrader",
+          footerTitle: "Clone settings into a new autotrader set.",
+          submitLabel: "Create Clone",
+        },
+      };
+
+      const resolveModeCopy = () => {
+        const copy = modeCopy[mode] || modeCopy.create;
+        elements.subtitle.textContent = copy.subtitle;
+        elements.footerTitle.textContent = copy.footerTitle;
+        elements.submitButton.textContent = copy.submitLabel;
+      };
+
+      const updateMarket = (market) => {
+        autotraderConfig.market = market;
+        autotraderConfig.exchange = null;
+        autotraderConfig.tradingPlan = null;
+        autotraderConfig.pairs = [];
+        render();
+      };
+
+      const updateExchange = (exchangeId) => {
+        const exchange = exchangeOptions.find((item) => item.id === exchangeId) || null;
+        autotraderConfig.exchange = exchange;
+        render();
+      };
+
+      const updateTradingPlan = (planId) => {
+        const plan = tradingPlans.find((item) => item.id === planId) || null;
+        autotraderConfig.tradingPlan = plan;
+        if (plan?.allowedPairs?.length) {
+          autotraderConfig.pairs = autotraderConfig.pairs.map((pair) => ({
+            ...pair,
+            pair: plan.allowedPairs.includes(pair.pair) ? pair.pair : plan.allowedPairs[0],
+          }));
+        }
+        render();
+      };
+
+      const updatePair = (index, key, value) => {
+        const pair = autotraderConfig.pairs[index];
+        if (!pair) {
+          return;
+        }
+        pair[key] = value;
+        render();
+      };
+
+      const addPair = () => {
+        if (!autotraderConfig.market) {
+          return;
+        }
+        const pairs = availablePairs[autotraderConfig.market] || [];
+        const defaultPair = pairs.find((pair) =>
+          !autotraderConfig.pairs.some((entry) => entry.pair === pair)
+        ) || pairs[0];
+
+        autotraderConfig.pairs.push({
+          pair: defaultPair || "",
+          tradeAmount: autotraderConfig.market === "Futures" ? 5000 : 2000,
+          leverage: autotraderConfig.market === "Futures" ? 3 : 1,
+          leverageType: autotraderConfig.market === "Futures" ? "Cross" : "Spot",
+        });
+        render();
+      };
+
+      const removePair = (index) => {
+        autotraderConfig.pairs.splice(index, 1);
+        render();
+      };
+
+      const formatCurrency = (value) => {
+        if (!Number.isFinite(value)) {
+          return "$0";
+        }
+        return `$${value.toLocaleString()}`;
+      };
+
+      const calculateTotalCapital = () =>
+        autotraderConfig.pairs.reduce(
+          (sum, pair) => sum + (Number(pair.tradeAmount) || 0),
+          0
+        );
+
+      const renderExchanges = () => {
+        elements.exchangeGrid.innerHTML = "";
+        if (!autotraderConfig.market) {
+          elements.exchangeEmpty.style.display = "block";
+          return;
+        }
+        elements.exchangeEmpty.style.display = "none";
+        const filtered = exchangeOptions.filter((item) => item.market === autotraderConfig.market);
+        filtered.forEach((exchange) => {
+          const card = document.createElement("button");
+          card.type = "button";
+          card.className = "exchange-card";
+          if (autotraderConfig.exchange?.id === exchange.id) {
+            card.classList.add("selected");
+          }
+          card.innerHTML = `
+            <div class="exchange-card-header">
+              <strong>${exchange.name}</strong>
+              <span class="badge">${exchange.market}</span>
+            </div>
+            <div class="config-section-description">
+              <span class="status-dot ${exchange.status === "Connected" ? "connected" : ""}"></span>
+              ${exchange.status}
+            </div>
+          `;
+          card.addEventListener("click", () => updateExchange(exchange.id));
+          elements.exchangeGrid.appendChild(card);
+        });
+      };
+
+      const renderPlans = () => {
+        elements.planGrid.innerHTML = "";
+        if (!autotraderConfig.market) {
+          elements.planEmpty.style.display = "block";
+          return;
+        }
+        elements.planEmpty.style.display = "none";
+        const filtered = tradingPlans.filter((plan) => plan.market === autotraderConfig.market);
+        filtered.forEach((plan) => {
+          const card = document.createElement("button");
+          card.type = "button";
+          card.className = "trading-plan-card";
+          if (autotraderConfig.tradingPlan?.id === plan.id) {
+            card.classList.add("selected");
+          }
+          card.innerHTML = `
+            <strong>${plan.name}</strong>
+            <span class="config-section-description">Market: ${plan.market}</span>
+            <span class="config-section-description">Leverage: ${plan.leverageType} (${plan.defaultLeverage})</span>
+            <span class="config-section-description">Pair coverage: ${plan.pairs}</span>
+          `;
+          card.addEventListener("click", () => updateTradingPlan(plan.id));
+          elements.planGrid.appendChild(card);
+        });
+      };
+
+      const renderPairs = () => {
+        elements.pairsBody.innerHTML = "";
+        const available =
+          autotraderConfig.tradingPlan?.allowedPairs?.length
+            ? autotraderConfig.tradingPlan.allowedPairs
+            : availablePairs[autotraderConfig.market] || [];
+        autotraderConfig.pairs.forEach((pair, index) => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>
+              <select class="table-select" data-index="${index}" data-key="pair">
+                ${available
+                  .map(
+                    (option) =>
+                      `<option value="${option}" ${option === pair.pair ? "selected" : ""}>${option}</option>`
+                  )
+                  .join("")}
+              </select>
+            </td>
+            <td>
+              <input class="table-input" type="number" min="0" step="100" value="${pair.tradeAmount}" data-index="${index}" data-key="tradeAmount" />
+            </td>
+            <td>
+              <input class="table-input" type="number" min="1" max="100" step="1" value="${pair.leverage}" data-index="${index}" data-key="leverage" />
+            </td>
+            <td>
+              <select class="table-select" data-index="${index}" data-key="leverageType">
+                <option value="Spot" ${pair.leverageType === "Spot" ? "selected" : ""}>Spot</option>
+                <option value="Cross" ${pair.leverageType === "Cross" ? "selected" : ""}>Cross</option>
+                <option value="Isolated" ${pair.leverageType === "Isolated" ? "selected" : ""}>Isolated</option>
+              </select>
+            </td>
+            <td>
+              <button class="table-action" type="button" data-remove="${index}">Remove</button>
+            </td>
+          `;
+          elements.pairsBody.appendChild(row);
+        });
+
+        elements.addPairButton.disabled = !autotraderConfig.market;
+        elements.pairsHelper.textContent = autotraderConfig.market
+          ? "Add pairs to spin up new autotraders."
+          : "Select a market before adding pairs.";
+      };
+
+      const renderSummary = () => {
+        elements.summaryMarket.textContent = autotraderConfig.market || "—";
+        elements.summaryExchange.textContent = autotraderConfig.exchange?.name || "—";
+        elements.summaryPlan.textContent = autotraderConfig.tradingPlan?.name || "—";
+        elements.summaryCount.textContent = autotraderConfig.pairs.length.toString();
+        elements.summaryCapital.textContent = formatCurrency(calculateTotalCapital());
+        elements.summaryPairs.innerHTML = "";
+
+        if (!autotraderConfig.pairs.length) {
+          const tag = document.createElement("span");
+          tag.className = "summary-tag";
+          tag.textContent = "No pairs selected";
+          elements.summaryPairs.appendChild(tag);
+          return;
+        }
+
+        autotraderConfig.pairs.forEach((pair) => {
+          const tag = document.createElement("span");
+          tag.className = "summary-tag";
+          tag.textContent = pair.pair || "Pair";
+          elements.summaryPairs.appendChild(tag);
+        });
+      };
+
+      const renderToggle = () => {
+        elements.toggleButtons.forEach((btn) => {
+          btn.classList.toggle("active", btn.dataset.market === autotraderConfig.market);
+        });
+      };
+
+      const renderCapitalControls = () => {
+        const amounts = autotraderConfig.pairs.map((pair) => Number(pair.tradeAmount)).filter((value) =>
+          Number.isFinite(value)
+        );
+        const leverages = autotraderConfig.pairs
+          .map((pair) => Number(pair.leverage))
+          .filter((value) => Number.isFinite(value));
+
+        const uniqueAmount = new Set(amounts).size === 1 ? amounts[0] : "";
+        const uniqueLeverage = new Set(leverages).size === 1 ? leverages[0] : "";
+
+        elements.capitalAmount.value = uniqueAmount;
+        elements.capitalLeverage.value = uniqueLeverage;
+
+        const hasInvalidAmount = autotraderConfig.pairs.some((pair) => Number(pair.tradeAmount) <= 0);
+        elements.capitalValidation.textContent = hasInvalidAmount
+          ? "Trade amounts must be greater than 0."
+          : "";
+
+        const hasInvalidLeverage = autotraderConfig.pairs.some(
+          (pair) => Number(pair.leverage) < 1 || Number(pair.leverage) > 100
+        );
+        elements.leverageValidation.textContent = hasInvalidLeverage
+          ? "Leverage must stay between 1x and 100x."
+          : "";
+      };
+
+      const canSubmit = () =>
+        autotraderConfig.market &&
+        autotraderConfig.exchange &&
+        autotraderConfig.tradingPlan &&
+        autotraderConfig.pairs.length > 0 &&
+        autotraderConfig.pairs.every((pair) => Number(pair.tradeAmount) > 0);
+
+      const renderSubmitState = () => {
+        elements.submitButton.disabled = !canSubmit();
+      };
+
+      const openPlanDrawer = () => {
+        drawerState.name = "";
+        drawerState.market = autotraderConfig.market || "Spot";
+        drawerState.selectedPairs = [];
+        renderPlanDrawer();
+        elements.planDrawer.classList.add("is-open");
+        elements.planDrawer.setAttribute("aria-hidden", "false");
+      };
+
+      const closePlanDrawer = () => {
+        elements.planDrawer.classList.remove("is-open");
+        elements.planDrawer.setAttribute("aria-hidden", "true");
+      };
+
+      const renderPlanDrawer = () => {
+        elements.planNameInput.value = drawerState.name;
+        elements.planMarketButtons.forEach((btn) => {
+          btn.classList.toggle("active", btn.dataset.planMarket === drawerState.market);
+        });
+
+        const options = availablePairs[drawerState.market] || [];
+        elements.pairUniverseList.innerHTML = "";
+        options.forEach((pair) => {
+          const label = document.createElement("label");
+          label.className = "pair-option";
+          label.innerHTML = `
+            <input type="checkbox" value="${pair}" ${drawerState.selectedPairs.includes(pair) ? "checked" : ""} />
+            <span>${pair}</span>
+          `;
+          elements.pairUniverseList.appendChild(label);
+        });
+
+        elements.savePlanDrawer.disabled = !drawerState.name.trim() || drawerState.selectedPairs.length === 0;
+      };
+
+      const savePlanDrawer = () => {
+        if (!drawerState.name.trim() || drawerState.selectedPairs.length === 0) {
+          return;
+        }
+        const newPlan = {
+          id: `custom-${Date.now()}`,
+          name: drawerState.name.trim(),
+          market: drawerState.market,
+          leverageType: "Custom",
+          defaultLeverage: "—",
+          pairs: `${drawerState.selectedPairs.length} pairs`,
+          allowedPairs: [...drawerState.selectedPairs],
+        };
+        tradingPlans = [newPlan, ...tradingPlans];
+        autotraderConfig.tradingPlan = newPlan;
+        closePlanDrawer();
+        render();
+      };
+
+      const render = () => {
+        renderToggle();
+        renderExchanges();
+        renderPlans();
+        renderPairs();
+        renderSummary();
+        renderCapitalControls();
+        renderSubmitState();
+      };
+
+      elements.toggleButtons.forEach((button) => {
+        button.addEventListener("click", () => updateMarket(button.dataset.market));
+      });
+
+      elements.addPairButton.addEventListener("click", addPair);
+
+      elements.openPlanDrawer.addEventListener("click", openPlanDrawer);
+      elements.closePlanDrawer.addEventListener("click", closePlanDrawer);
+      elements.cancelPlanDrawer.addEventListener("click", closePlanDrawer);
+      elements.savePlanDrawer.addEventListener("click", savePlanDrawer);
+
+      elements.planNameInput.addEventListener("input", (event) => {
+        drawerState.name = event.target.value;
+        renderPlanDrawer();
+      });
+
+      elements.planMarketButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          drawerState.market = button.dataset.planMarket;
+          drawerState.selectedPairs = [];
+          renderPlanDrawer();
+        });
+      });
+
+      elements.pairUniverseList.addEventListener("change", (event) => {
+        const target = event.target;
+        if (!(target instanceof HTMLInputElement)) {
+          return;
+        }
+        const value = target.value;
+        if (target.checked) {
+          drawerState.selectedPairs = [...drawerState.selectedPairs, value];
+        } else {
+          drawerState.selectedPairs = drawerState.selectedPairs.filter((pair) => pair !== value);
+        }
+        renderPlanDrawer();
+      });
+
+      elements.pairsBody.addEventListener("input", (event) => {
+        const target = event.target;
+        if (!(target instanceof HTMLInputElement || target instanceof HTMLSelectElement)) {
+          return;
+        }
+        const index = Number(target.dataset.index);
+        const key = target.dataset.key;
+        if (!key) {
+          return;
+        }
+        updatePair(index, key, target.value);
+      });
+
+      elements.pairsBody.addEventListener("click", (event) => {
+        const target = event.target;
+        if (!(target instanceof HTMLButtonElement)) {
+          return;
+        }
+        const index = Number(target.dataset.remove);
+        if (!Number.isNaN(index)) {
+          removePair(index);
+        }
+      });
+
+      elements.capitalAmount.addEventListener("input", (event) => {
+        const value = Number(event.target.value);
+        if (!Number.isFinite(value)) {
+          return;
+        }
+        autotraderConfig.pairs = autotraderConfig.pairs.map((pair) => ({
+          ...pair,
+          tradeAmount: value,
+        }));
+        render();
+      });
+
+      elements.capitalLeverage.addEventListener("input", (event) => {
+        const value = Number(event.target.value);
+        if (!Number.isFinite(value)) {
+          return;
+        }
+        autotraderConfig.pairs = autotraderConfig.pairs.map((pair) => ({
+          ...pair,
+          leverage: value,
+        }));
+        render();
+      });
+
+      elements.cancelButton.addEventListener("click", () => {
+        window.location.href = "../autotraders.html";
+      });
+
+      elements.submitButton.addEventListener("click", () => {
+        if (!canSubmit()) {
+          return;
+        }
+        if (mode !== "create") {
+          window.alert("This route is stubbed for now.");
+          return;
+        }
+        const createdAt = Date.now();
+        const exchangeName = autotraderConfig.exchange?.name || "Exchange";
+        const planName = autotraderConfig.tradingPlan?.name || "Autotrader";
+        const newAutotraders = autotraderConfig.pairs.map((pair, idx) => ({
+          id: createdAt + idx,
+          name: planName,
+          pair: pair.pair,
+          exchange: exchangeName,
+          capital: Number(pair.tradeAmount) || 0,
+          pnl: 0,
+          winRate: 0,
+          running: 0,
+          status: "STOPPED",
+        }));
+
+        const storageKey = "byscript_custom_autotraders";
+        const stored = JSON.parse(localStorage.getItem(storageKey) || "[]");
+        localStorage.setItem(storageKey, JSON.stringify([...newAutotraders, ...stored]));
+        window.location.href = "../autotraders.html";
+      });
+
+      resolveModeCopy();
+      render();
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && elements.planDrawer.classList.contains("is-open")) {
+          closePlanDrawer();
+        }
+      });
+    </script>
+  </body>
+</html>
