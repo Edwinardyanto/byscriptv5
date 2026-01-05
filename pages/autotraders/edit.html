@@ -355,6 +355,116 @@
           align-items: flex-start;
         }
       }
+
+      .page-autotrader-config .trading-plan-drawer {
+        position: fixed;
+        top: 0;
+        right: 0;
+        height: 100vh;
+        width: min(460px, 92vw);
+        background: rgba(20, 16, 30, 0.98);
+        border-left: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow: var(--shadow-soft);
+        transform: translateX(100%);
+        transition: transform 0.25s ease;
+        display: grid;
+        grid-template-rows: auto 1fr auto;
+        z-index: 10;
+        pointer-events: none;
+      }
+
+      .page-autotrader-config .trading-plan-drawer.is-open {
+        transform: translateX(0);
+        pointer-events: auto;
+      }
+
+      .page-autotrader-config .drawer-header {
+        padding: 20px 20px 12px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .page-autotrader-config .drawer-title {
+        font-size: 1.05rem;
+        font-weight: 600;
+      }
+
+      .page-autotrader-config .drawer-subtitle {
+        font-size: 0.85rem;
+        color: rgba(232, 227, 243, 0.6);
+      }
+
+      .page-autotrader-config .drawer-close {
+        border: none;
+        background: transparent;
+        color: rgba(232, 227, 243, 0.7);
+        font-size: 1.2rem;
+        cursor: pointer;
+      }
+
+      .page-autotrader-config .drawer-body {
+        padding: 18px 20px;
+        overflow-y: auto;
+        display: grid;
+        gap: 18px;
+      }
+
+      .page-autotrader-config .drawer-section {
+        display: grid;
+        gap: 8px;
+      }
+
+      .page-autotrader-config .drawer-section-title {
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: rgba(232, 227, 243, 0.55);
+      }
+
+      .page-autotrader-config .drawer-input {
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 10px;
+        padding: 10px 12px;
+        color: var(--color-text);
+      }
+
+      .page-autotrader-config .drawer-helper {
+        font-size: 0.78rem;
+        color: rgba(232, 227, 243, 0.6);
+      }
+
+      .page-autotrader-config .pair-universe {
+        display: grid;
+        gap: 8px;
+        max-height: 220px;
+        overflow-y: auto;
+        padding-right: 4px;
+      }
+
+      .page-autotrader-config .pair-option {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 10px;
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: rgba(255, 255, 255, 0.04);
+        font-size: 0.85rem;
+      }
+
+      .page-autotrader-config .drawer-footer {
+        padding: 16px 20px;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        background: rgba(15, 12, 24, 0.92);
+      }
     </style>
   </head>
   <body class="page-autotrader-config" data-mode="edit">
@@ -451,7 +561,7 @@
                     <div class="config-section-title">Trading Plan</div>
                     <div class="config-section-description">Pick a plan that matches your execution style.</div>
                   </div>
-                  <button class="muted-button" type="button">Create Trading Plan</button>
+                  <button class="muted-button" type="button" id="open-plan-drawer">Create Trading Plan</button>
                 </div>
                 <div class="trading-plan-grid" id="plan-grid"></div>
                 <div class="empty-state" id="plan-empty">Select a market to view trading plans.</div>
@@ -547,6 +657,42 @@
         </main>
       </div>
     </div>
+    <aside class="trading-plan-drawer" id="trading-plan-drawer" aria-hidden="true">
+      <div class="drawer-header">
+        <div>
+          <div class="drawer-title">Create Trading Plan</div>
+          <div class="drawer-subtitle">Define the pair universe for your autotraders</div>
+        </div>
+        <button class="drawer-close" type="button" id="close-plan-drawer" aria-label="Close">×</button>
+      </div>
+      <div class="drawer-body">
+        <div class="drawer-section">
+          <div class="drawer-section-title">Plan Basics</div>
+          <input class="drawer-input" type="text" id="plan-name-input" placeholder="Plan name" />
+          <div class="drawer-helper">
+            Trading Plans define which pairs can be used when creating autotraders.
+          </div>
+        </div>
+        <div class="drawer-section">
+          <div class="drawer-section-title">Market Compatibility</div>
+          <div class="toggle-group" role="group" aria-label="Trading plan market">
+            <button class="toggle-button" type="button" data-plan-market="Spot">Spot</button>
+            <button class="toggle-button" type="button" data-plan-market="Futures">Futures</button>
+          </div>
+        </div>
+        <div class="drawer-section">
+          <div class="drawer-section-title">Pair Universe Selection</div>
+          <div class="pair-universe" id="pair-universe-list"></div>
+          <div class="drawer-helper">
+            Only these pairs will be available when creating autotraders using this plan.
+          </div>
+        </div>
+      </div>
+      <div class="drawer-footer">
+        <button class="outline-button" type="button" id="cancel-plan-drawer">Cancel</button>
+        <button class="primary-button" type="button" id="save-plan-drawer">Save Trading Plan</button>
+      </div>
+    </aside>
     <script type="module" src="../../src/scripts/main.js"></script>
     <script type="module">
       const autotraderConfig = {
@@ -565,7 +711,7 @@
         { id: "okx", name: "OKX", market: "Futures", status: "Disconnected" },
       ];
 
-      const tradingPlans = [
+      let tradingPlans = [
         {
           id: "momentum-spot",
           name: "Momentum Core",
@@ -573,6 +719,7 @@
           leverageType: "No Leverage",
           defaultLeverage: "1x",
           pairs: "Top 10",
+          allowedPairs: ["BTC/USDT", "ETH/USDT", "SOL/USDT", "AVAX/USDT"],
         },
         {
           id: "mean-reversion-spot",
@@ -581,6 +728,7 @@
           leverageType: "No Leverage",
           defaultLeverage: "1x",
           pairs: "Top 25",
+          allowedPairs: ["BTC/USDT", "ETH/USDT", "SOL/USDT", "AVAX/USDT"],
         },
         {
           id: "momentum-futures",
@@ -589,6 +737,7 @@
           leverageType: "Cross",
           defaultLeverage: "5x",
           pairs: "Top 15",
+          allowedPairs: ["BTC/USDT Perp", "ETH/USDT Perp", "SOL/USDT Perp", "BNB/USDT Perp"],
         },
         {
           id: "hedged-futures",
@@ -597,6 +746,7 @@
           leverageType: "Isolated",
           defaultLeverage: "3x",
           pairs: "Top 8",
+          allowedPairs: ["BTC/USDT Perp", "ETH/USDT Perp", "SOL/USDT Perp", "BNB/USDT Perp"],
         },
       ];
 
@@ -628,6 +778,20 @@
         leverageValidation: document.getElementById("leverage-validation"),
         footerTitle: document.getElementById("footer-title"),
         subtitle: document.getElementById("configurator-subtitle"),
+        openPlanDrawer: document.getElementById("open-plan-drawer"),
+        planDrawer: document.getElementById("trading-plan-drawer"),
+        closePlanDrawer: document.getElementById("close-plan-drawer"),
+        cancelPlanDrawer: document.getElementById("cancel-plan-drawer"),
+        savePlanDrawer: document.getElementById("save-plan-drawer"),
+        planNameInput: document.getElementById("plan-name-input"),
+        planMarketButtons: document.querySelectorAll("[data-plan-market]"),
+        pairUniverseList: document.getElementById("pair-universe-list"),
+      };
+
+      const drawerState = {
+        name: "",
+        market: "Spot",
+        selectedPairs: [],
       };
 
       const mode = document.body.dataset.mode || "create";
@@ -674,6 +838,12 @@
       const updateTradingPlan = (planId) => {
         const plan = tradingPlans.find((item) => item.id === planId) || null;
         autotraderConfig.tradingPlan = plan;
+        if (plan?.allowedPairs?.length) {
+          autotraderConfig.pairs = autotraderConfig.pairs.map((pair) => ({
+            ...pair,
+            pair: plan.allowedPairs.includes(pair.pair) ? pair.pair : plan.allowedPairs[0],
+          }));
+        }
         render();
       };
 
@@ -780,7 +950,10 @@
 
       const renderPairs = () => {
         elements.pairsBody.innerHTML = "";
-        const available = availablePairs[autotraderConfig.market] || [];
+        const available =
+          autotraderConfig.tradingPlan?.allowedPairs?.length
+            ? autotraderConfig.tradingPlan.allowedPairs
+            : availablePairs[autotraderConfig.market] || [];
         autotraderConfig.pairs.forEach((pair, index) => {
           const row = document.createElement("tr");
           row.innerHTML = `
@@ -888,6 +1061,60 @@
         elements.submitButton.disabled = !canSubmit();
       };
 
+      const openPlanDrawer = () => {
+        drawerState.name = "";
+        drawerState.market = autotraderConfig.market || "Spot";
+        drawerState.selectedPairs = [];
+        renderPlanDrawer();
+        elements.planDrawer.classList.add("is-open");
+        elements.planDrawer.setAttribute("aria-hidden", "false");
+      };
+
+      const closePlanDrawer = () => {
+        elements.planDrawer.classList.remove("is-open");
+        elements.planDrawer.setAttribute("aria-hidden", "true");
+      };
+
+      const renderPlanDrawer = () => {
+        elements.planNameInput.value = drawerState.name;
+        elements.planMarketButtons.forEach((btn) => {
+          btn.classList.toggle("active", btn.dataset.planMarket === drawerState.market);
+        });
+
+        const options = availablePairs[drawerState.market] || [];
+        elements.pairUniverseList.innerHTML = "";
+        options.forEach((pair) => {
+          const label = document.createElement("label");
+          label.className = "pair-option";
+          label.innerHTML = `
+            <input type="checkbox" value="${pair}" ${drawerState.selectedPairs.includes(pair) ? "checked" : ""} />
+            <span>${pair}</span>
+          `;
+          elements.pairUniverseList.appendChild(label);
+        });
+
+        elements.savePlanDrawer.disabled = !drawerState.name.trim() || drawerState.selectedPairs.length === 0;
+      };
+
+      const savePlanDrawer = () => {
+        if (!drawerState.name.trim() || drawerState.selectedPairs.length === 0) {
+          return;
+        }
+        const newPlan = {
+          id: `custom-${Date.now()}`,
+          name: drawerState.name.trim(),
+          market: drawerState.market,
+          leverageType: "Custom",
+          defaultLeverage: "—",
+          pairs: `${drawerState.selectedPairs.length} pairs`,
+          allowedPairs: [...drawerState.selectedPairs],
+        };
+        tradingPlans = [newPlan, ...tradingPlans];
+        autotraderConfig.tradingPlan = newPlan;
+        closePlanDrawer();
+        render();
+      };
+
       const render = () => {
         renderToggle();
         renderExchanges();
@@ -903,6 +1130,38 @@
       });
 
       elements.addPairButton.addEventListener("click", addPair);
+
+      elements.openPlanDrawer.addEventListener("click", openPlanDrawer);
+      elements.closePlanDrawer.addEventListener("click", closePlanDrawer);
+      elements.cancelPlanDrawer.addEventListener("click", closePlanDrawer);
+      elements.savePlanDrawer.addEventListener("click", savePlanDrawer);
+
+      elements.planNameInput.addEventListener("input", (event) => {
+        drawerState.name = event.target.value;
+        renderPlanDrawer();
+      });
+
+      elements.planMarketButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          drawerState.market = button.dataset.planMarket;
+          drawerState.selectedPairs = [];
+          renderPlanDrawer();
+        });
+      });
+
+      elements.pairUniverseList.addEventListener("change", (event) => {
+        const target = event.target;
+        if (!(target instanceof HTMLInputElement)) {
+          return;
+        }
+        const value = target.value;
+        if (target.checked) {
+          drawerState.selectedPairs = [...drawerState.selectedPairs, value];
+        } else {
+          drawerState.selectedPairs = drawerState.selectedPairs.filter((pair) => pair !== value);
+        }
+        renderPlanDrawer();
+      });
 
       elements.pairsBody.addEventListener("input", (event) => {
         const target = event.target;
@@ -987,6 +1246,12 @@
 
       resolveModeCopy();
       render();
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && elements.planDrawer.classList.contains("is-open")) {
+          closePlanDrawer();
+        }
+      });
     </script>
   </body>
 </html>
