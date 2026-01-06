@@ -56,8 +56,7 @@
       .page-autotrader-config .config-section-description,
       .page-autotrader-config .section-description,
       .page-autotrader-config .section-helper,
-      .page-autotrader-config .pairs-description,
-      .page-autotrader-config .capital-description {
+      .page-autotrader-config .pairs-description {
         color: rgba(255, 255, 255, 0.7);
         font-size: 0.85rem;
       }
@@ -339,43 +338,6 @@
       .page-autotrader-config .helper-text {
         color: rgba(255, 255, 255, 0.6);
         font-size: 0.75rem;
-      }
-
-      .page-autotrader-config .capital-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-        gap: 12px;
-      }
-
-      .page-autotrader-config .field-group {
-        display: grid;
-        gap: 6px;
-      }
-
-      .page-autotrader-config .field-label {
-        font-size: 0.75rem;
-        text-transform: uppercase;
-        letter-spacing: 0.1em;
-        color: rgba(255, 255, 255, 0.6);
-      }
-
-      .page-autotrader-config .field-input {
-        background: rgba(255, 255, 255, 0.04);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 10px;
-        padding: 8px 10px;
-        color: #ffffff;
-      }
-
-      .page-autotrader-config .field-input:focus {
-        border-color: rgba(104, 254, 29, 0.4);
-        outline: none;
-        box-shadow: none;
-      }
-
-      .page-autotrader-config .validation-text {
-        font-size: 0.72rem;
-        color: rgba(255, 163, 163, 0.9);
       }
 
       .page-autotrader-config .summary-panel {
@@ -824,7 +786,6 @@
         color: rgba(255, 255, 255, 0.6);
       }
 
-      .page-autotrader-config .field-input::placeholder,
       .page-autotrader-config .drawer-input::placeholder,
       .page-autotrader-config .pair-search::placeholder,
       .page-autotrader-config .table-input::placeholder {
@@ -1138,7 +1099,6 @@
           name: "Momentum Core",
           market: "Spot",
           leverageType: "No Leverage",
-          defaultLeverage: "1x",
           pairs: "Top 10",
           pairUniverse: ["BTC/USDT", "ETH/USDT", "SOL/USDT", "AVAX/USDT"],
         },
@@ -1147,7 +1107,6 @@
           name: "Mean Reversion",
           market: "Spot",
           leverageType: "No Leverage",
-          defaultLeverage: "1x",
           pairs: "Top 25",
           pairUniverse: ["BTC/USDT", "ETH/USDT", "SOL/USDT", "AVAX/USDT"],
         },
@@ -1156,7 +1115,6 @@
           name: "Momentum Turbo",
           market: "Futures",
           leverageType: "Cross",
-          defaultLeverage: "5x",
           pairs: "Top 15",
           pairUniverse: ["BTC/USDT Perp", "ETH/USDT Perp", "SOL/USDT Perp", "BNB/USDT Perp"],
         },
@@ -1165,7 +1123,6 @@
           name: "Hedged Breakout",
           market: "Futures",
           leverageType: "Isolated",
-          defaultLeverage: "3x",
           pairs: "Top 8",
           pairUniverse: ["BTC/USDT Perp", "ETH/USDT Perp", "SOL/USDT Perp", "BNB/USDT Perp"],
         },
@@ -1236,11 +1193,6 @@
       };
 
       const mode = document.body.dataset.mode || "create";
-      const leverageMemory = {
-        defaultLeverage: null,
-        leverageType: null,
-      };
-
       const modeCopy = {
         create: {
           footerTitle: "Ready to create new autotraders?",
@@ -1270,13 +1222,6 @@
       };
 
       const updateMarket = (market) => {
-        if (autotraderConfig.market === "Futures") {
-          const leverageSample = autotraderConfig.pairs.find((pair) => Number(pair.leverage));
-          if (leverageSample) {
-            leverageMemory.defaultLeverage = Number(leverageSample.leverage) || leverageMemory.defaultLeverage;
-            leverageMemory.leverageType = leverageSample.leverageType || leverageMemory.leverageType;
-          }
-        }
         autotraderConfig.market = market;
         autotraderConfig.exchange = null;
         autotraderConfig.tradingPlan = null;
@@ -1371,10 +1316,8 @@
         autotraderConfig.pairs.push({
           pair: defaultPair || "",
           tradeAmount: autotraderConfig.market === "Futures" ? 5000 : 2000,
-          leverage:
-            autotraderConfig.market === "Futures" ? leverageMemory.defaultLeverage || 3 : 1,
-          leverageType:
-            autotraderConfig.market === "Futures" ? leverageMemory.leverageType || "Cross" : "Spot",
+          leverage: autotraderConfig.market === "Futures" ? 3 : 1,
+          leverageType: autotraderConfig.market === "Futures" ? "Cross" : "Spot",
         });
         render();
       };
@@ -1768,7 +1711,6 @@
           name: drawerState.name.trim(),
           market: drawerState.market,
           leverageType: "Custom",
-          defaultLeverage: "—",
           pairs: `${drawerState.selectedPairs.length} pairs`,
           pairUniverse: [...drawerState.selectedPairs],
         };
