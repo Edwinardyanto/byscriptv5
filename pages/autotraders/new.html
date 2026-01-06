@@ -12,10 +12,6 @@
         gap: 6px;
       }
 
-      .page-autotrader-config .section-title {
-        font-size: 1.6rem;
-      }
-
       .page-autotrader-config .section-subtitle {
         color: rgba(255, 255, 255, 0.6);
         font-size: 0.95rem;
@@ -1587,6 +1583,7 @@
         }
 
         autotraderConfig.pairs.forEach((pair, index) => {
+          const leverageDisabled = autotraderConfig.market === "Spot";
           const row = document.createElement("tr");
           row.innerHTML = `
             <td>

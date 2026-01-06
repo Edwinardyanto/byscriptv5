@@ -1587,6 +1587,7 @@
         }
 
         autotraderConfig.pairs.forEach((pair, index) => {
+          const leverageDisabled = autotraderConfig.market === "Spot";
           const row = document.createElement("tr");
           row.innerHTML = `
             <td>

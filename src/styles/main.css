@@ -275,7 +275,7 @@ header.section-header {
 
 .section--header .section-header {
   gap: 12px;
-  justify-content: flex-start;
+  justify-content: center;
 }
 
 
@@ -452,7 +452,7 @@ main {
   min-height: 32px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+
 }
 
 .section-title {
