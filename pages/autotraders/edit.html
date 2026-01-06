@@ -958,15 +958,7 @@
                   </div>
                 </div>
                 <table class="pairs-table">
-                  <thead>
-                    <tr>
-                      <th>Pair</th>
-                      <th>Trade Amount (USD)</th>
-                      <th>Leverage</th>
-                      <th>Leverage Type</th>
-                      <th></th>
-                    </tr>
-                  </thead>
+                  <thead id="pairs-head"></thead>
                   <tbody id="pairs-body"></tbody>
                 </table>
                 <div class="pairs-actions">
@@ -987,11 +979,7 @@
                     <input class="field-input" id="capital-amount" type="number" min="0" step="100" placeholder="e.g. 2500" />
                     <span class="validation-text" id="capital-validation"></span>
                   </div>
-                  <div class="field-group">
-                    <label class="field-label" for="capital-leverage">Apply Default Leverage</label>
-                    <input class="field-input" id="capital-leverage" type="number" min="1" max="100" step="1" placeholder="e.g. 5" />
-                    <span class="validation-text" id="leverage-validation"></span>
-                  </div>
+                  <div class="field-group" id="capital-leverage-group"></div>
                 </div>
               </div>
             </section>
@@ -1222,6 +1210,7 @@
         planPlaceholder: document.getElementById("plan-placeholder"),
         planSelection: document.getElementById("plan-selection"),
         planEmpty: document.getElementById("plan-empty"),
+        pairsHead: document.getElementById("pairs-head"),
         pairsBody: document.getElementById("pairs-body"),
         addPairButton: document.getElementById("add-pair"),
         pairsHelper: document.getElementById("pairs-helper"),
@@ -1234,9 +1223,10 @@
         cancelButton: document.getElementById("cancel-config"),
         submitButton: document.getElementById("submit-config"),
         capitalAmount: document.getElementById("capital-amount"),
-        capitalLeverage: document.getElementById("capital-leverage"),
         capitalValidation: document.getElementById("capital-validation"),
-        leverageValidation: document.getElementById("leverage-validation"),
+        capitalLeverageGroup: document.getElementById("capital-leverage-group"),
+        capitalLeverage: null,
+        leverageValidation: null,
         footerTitle: document.getElementById("footer-title"),
         openPlanDrawer: document.getElementById("open-plan-drawer"),
         planDrawer: document.getElementById("trading-plan-drawer"),
@@ -1271,6 +1261,10 @@
       };
 
       const mode = document.body.dataset.mode || "create";
+      const leverageMemory = {
+        defaultLeverage: null,
+        leverageType: null,
+      };
 
       const modeCopy = {
         create: {
@@ -1293,7 +1287,21 @@
         elements.submitButton.textContent = copy.submitLabel;
       };
 
+      const applyDefaultMarket = () => {
+        if (autotraderConfig.market) {
+          return;
+        }
+        autotraderConfig.market = "Spot";
+      };
+
       const updateMarket = (market) => {
+        if (autotraderConfig.market === "Futures") {
+          const leverageSample = autotraderConfig.pairs.find((pair) => Number(pair.leverage));
+          if (leverageSample) {
+            leverageMemory.defaultLeverage = Number(leverageSample.leverage) || leverageMemory.defaultLeverage;
+            leverageMemory.leverageType = leverageSample.leverageType || leverageMemory.leverageType;
+          }
+        }
         autotraderConfig.market = market;
         autotraderConfig.exchange = null;
         autotraderConfig.tradingPlan = null;
@@ -1388,8 +1396,10 @@
         autotraderConfig.pairs.push({
           pair: defaultPair || "",
           tradeAmount: autotraderConfig.market === "Futures" ? 5000 : 2000,
-          leverage: autotraderConfig.market === "Futures" ? 3 : 1,
-          leverageType: autotraderConfig.market === "Futures" ? "Cross" : "Spot",
+          leverage:
+            autotraderConfig.market === "Futures" ? leverageMemory.defaultLeverage || 3 : 1,
+          leverageType:
+            autotraderConfig.market === "Futures" ? leverageMemory.leverageType || "Cross" : "Spot",
         });
         render();
       };
@@ -1543,10 +1553,39 @@
 
       const renderPairs = () => {
         elements.pairsBody.innerHTML = "";
+        const isSpot = autotraderConfig.market === "Spot";
+        const showLeverage = autotraderConfig.market === "Futures";
         const available =
           autotraderConfig.tradingPlan?.pairUniverse?.length
             ? autotraderConfig.tradingPlan.pairUniverse
             : availablePairs[autotraderConfig.market] || [];
+
+        elements.pairsHead.innerHTML = showLeverage
+          ? `
+            <tr>
+              <th>Pair</th>
+              <th>Trade Amount (USD)</th>
+              <th>Leverage</th>
+              <th>Leverage Type</th>
+              <th></th>
+            </tr>
+          `
+          : `
+            <tr>
+              <th>Pair</th>
+              <th>Trade Amount (USD)</th>
+              <th></th>
+            </tr>
+          `;
+
+        if (isSpot) {
+          autotraderConfig.pairs = autotraderConfig.pairs.map((pair) => ({
+            ...pair,
+            leverage: 1,
+            leverageType: "Spot",
+          }));
+        }
+
         autotraderConfig.pairs.forEach((pair, index) => {
           const row = document.createElement("tr");
           row.innerHTML = `
@@ -1563,16 +1602,22 @@
             <td>
               <input class="table-input" type="number" min="0" step="100" value="${pair.tradeAmount}" data-index="${index}" data-key="tradeAmount" />
             </td>
-            <td>
-              <input class="table-input" type="number" min="1" max="100" step="1" value="${pair.leverage}" data-index="${index}" data-key="leverage" />
-            </td>
-            <td>
-              <select class="table-select" data-index="${index}" data-key="leverageType">
-                <option value="Spot" ${pair.leverageType === "Spot" ? "selected" : ""}>Spot</option>
-                <option value="Cross" ${pair.leverageType === "Cross" ? "selected" : ""}>Cross</option>
-                <option value="Isolated" ${pair.leverageType === "Isolated" ? "selected" : ""}>Isolated</option>
-              </select>
-            </td>
+            ${
+              showLeverage
+                ? `
+                  <td>
+                    <input class="table-input" type="number" min="1" max="100" step="1" value="${pair.leverage}" data-index="${index}" data-key="leverage" />
+                  </td>
+                  <td>
+                    <select class="table-select" data-index="${index}" data-key="leverageType">
+                      <option value="Spot" ${pair.leverageType === "Spot" ? "selected" : ""}>Spot</option>
+                      <option value="Cross" ${pair.leverageType === "Cross" ? "selected" : ""}>Cross</option>
+                      <option value="Isolated" ${pair.leverageType === "Isolated" ? "selected" : ""}>Isolated</option>
+                    </select>
+                  </td>
+                `
+                : ""
+            }
             <td>
               <button class="table-action" type="button" data-remove="${index}">Remove</button>
             </td>
@@ -1628,19 +1673,39 @@
         const uniqueLeverage = new Set(leverages).size === 1 ? leverages[0] : "";
 
         elements.capitalAmount.value = uniqueAmount;
-        elements.capitalLeverage.value = uniqueLeverage;
+
+        if (autotraderConfig.market === "Spot") {
+          elements.capitalLeverageGroup.innerHTML = "";
+          elements.capitalLeverage = null;
+          elements.leverageValidation = null;
+        } else {
+          elements.capitalLeverageGroup.innerHTML = `
+            <label class="field-label" for="capital-leverage">Apply Default Leverage</label>
+            <input class="field-input" id="capital-leverage" type="number" min="1" max="100" step="1" placeholder="e.g. 5" />
+            <span class="validation-text" id="leverage-validation"></span>
+          `;
+          elements.capitalLeverage = document.getElementById("capital-leverage");
+          elements.leverageValidation = document.getElementById("leverage-validation");
+          elements.capitalLeverage.value = uniqueLeverage;
+          if (elements.capitalLeverage && !elements.capitalLeverage.dataset.bound) {
+            elements.capitalLeverage.addEventListener("input", handleCapitalLeverageInput);
+            elements.capitalLeverage.dataset.bound = "true";
+          }
+        }
 
         const hasInvalidAmount = autotraderConfig.pairs.some((pair) => Number(pair.tradeAmount) <= 0);
         elements.capitalValidation.textContent = hasInvalidAmount
           ? "Trade amounts must be greater than 0."
           : "";
 
-        const hasInvalidLeverage = autotraderConfig.pairs.some(
-          (pair) => Number(pair.leverage) < 1 || Number(pair.leverage) > 100
-        );
-        elements.leverageValidation.textContent = hasInvalidLeverage
-          ? "Leverage must stay between 1x and 100x."
-          : "";
+        if (autotraderConfig.market !== "Spot" && elements.leverageValidation) {
+          const hasInvalidLeverage = autotraderConfig.pairs.some(
+            (pair) => Number(pair.leverage) < 1 || Number(pair.leverage) > 100
+          );
+          elements.leverageValidation.textContent = hasInvalidLeverage
+            ? "Leverage must stay between 1x and 100x."
+            : "";
+        }
       };
 
       const canSubmit = () =>
@@ -1923,6 +1988,18 @@
         if (!key) {
           return;
         }
+        if (autotraderConfig.market === "Spot" && (key === "leverage" || key === "leverageType")) {
+          return;
+        }
+        if (autotraderConfig.market === "Futures" && key === "leverage") {
+          const value = Number(target.value);
+          if (Number.isFinite(value)) {
+            leverageMemory.defaultLeverage = value;
+          }
+        }
+        if (autotraderConfig.market === "Futures" && key === "leverageType") {
+          leverageMemory.leverageType = target.value;
+        }
         updatePair(index, key, target.value);
       });
 
@@ -1949,17 +2026,21 @@
         render();
       });
 
-      elements.capitalLeverage.addEventListener("input", (event) => {
+      const handleCapitalLeverageInput = (event) => {
+        if (autotraderConfig.market === "Spot") {
+          return;
+        }
         const value = Number(event.target.value);
         if (!Number.isFinite(value)) {
           return;
         }
+        leverageMemory.defaultLeverage = value;
         autotraderConfig.pairs = autotraderConfig.pairs.map((pair) => ({
           ...pair,
           leverage: value,
         }));
         render();
-      });
+      };
 
       elements.cancelButton.addEventListener("click", () => {
         window.location.href = "../autotraders.html";
@@ -1995,6 +2076,7 @@
       });
 
       resolveModeCopy();
+      applyDefaultMarket();
       render();
 
       document.addEventListener("click", (event) => {
