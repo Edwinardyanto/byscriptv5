@@ -1293,6 +1293,13 @@
         elements.submitButton.textContent = copy.submitLabel;
       };
 
+      const applyDefaultMarket = () => {
+        if (autotraderConfig.market) {
+          return;
+        }
+        autotraderConfig.market = "Spot";
+      };
+
       const updateMarket = (market) => {
         autotraderConfig.market = market;
         autotraderConfig.exchange = null;
@@ -1995,6 +2002,7 @@
       });
 
       resolveModeCopy();
+      applyDefaultMarket();
       render();
 
       document.addEventListener("click", (event) => {
