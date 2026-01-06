@@ -192,7 +192,7 @@
       <header class="section section--header section-header autotraders-header">
         <div class="section-header autotraders-header-row">
           <h1 class="section-title">Autotraders</h1>
-          <button class="button autotraders-add-button" type="button">+ Add Autotrader</button>
+          <a class="button autotraders-add-button" href="autotraders/new.html">+ Add Autotrader</a>
         </div>
       </header>
       <aside>
@@ -402,17 +402,23 @@
       const PAGE_SIZE = 10;
       let currentPage = 1;
 
-      const autotradersList = [...Array(42)].map((_, i) => ({
-        id: i + 1,
-        name: `Strategy ${i + 1}`,
-        pair: "BTC_USDT",
-        exchange: "Binance",
-        capital: 200 + i * 10,
-        pnl: i % 3 === 0 ? -20 : 40 + i,
-        winRate: 60 + (i % 10),
-        running: i % 2,
-        status: i % 2 ? "ACTIVE" : "STOPPED",
-      }));
+      const storedAutotraders = JSON.parse(
+        localStorage.getItem("byscript_custom_autotraders") || "[]"
+      );
+      const autotradersList = [
+        ...storedAutotraders,
+        ...[...Array(42)].map((_, i) => ({
+          id: i + 1,
+          name: `Strategy ${i + 1}`,
+          pair: "BTC_USDT",
+          exchange: "Binance",
+          capital: 200 + i * 10,
+          pnl: i % 3 === 0 ? -20 : 40 + i,
+          winRate: 60 + (i % 10),
+          running: i % 2,
+          status: i % 2 ? "ACTIVE" : "STOPPED",
+        })),
+      ];
 
       const performanceContainer = document.querySelector(
         ".page-autotraders [data-total-performance=\"autotraders\"]"
