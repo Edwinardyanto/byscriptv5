@@ -962,22 +962,6 @@
                   <button class="muted-button" type="button" id="add-pair">Add Pair</button>
                 </div>
               </div>
-              <div class="config-section" id="section-capital">
-                <div class="config-section-header">
-                  <div>
-                    <div class="config-section-title">Capital & Leverage</div>
-                    <div class="config-section-description">Adjust portfolio-wide values with inline validation only.</div>
-                  </div>
-                </div>
-                <div class="capital-grid">
-                  <div class="field-group">
-                    <label class="field-label" for="capital-amount">Apply Trade Amount (USD)</label>
-                    <input class="field-input" id="capital-amount" type="number" min="0" step="100" placeholder="e.g. 2500" />
-                    <span class="validation-text" id="capital-validation"></span>
-                  </div>
-                  <div class="field-group" id="capital-leverage-group"></div>
-                </div>
-              </div>
             </section>
             <aside class="summary-panel">
               <div class="summary-header">
@@ -1218,11 +1202,6 @@
         summaryPairs: document.getElementById("summary-pairs"),
         cancelButton: document.getElementById("cancel-config"),
         submitButton: document.getElementById("submit-config"),
-        capitalAmount: document.getElementById("capital-amount"),
-        capitalValidation: document.getElementById("capital-validation"),
-        capitalLeverageGroup: document.getElementById("capital-leverage-group"),
-        capitalLeverage: null,
-        leverageValidation: null,
         footerTitle: document.getElementById("footer-title"),
         openPlanDrawer: document.getElementById("open-plan-drawer"),
         planDrawer: document.getElementById("trading-plan-drawer"),
@@ -1658,53 +1637,6 @@
         });
       };
 
-      const renderCapitalControls = () => {
-        const amounts = autotraderConfig.pairs.map((pair) => Number(pair.tradeAmount)).filter((value) =>
-          Number.isFinite(value)
-        );
-        const leverages = autotraderConfig.pairs
-          .map((pair) => Number(pair.leverage))
-          .filter((value) => Number.isFinite(value));
-
-        const uniqueAmount = new Set(amounts).size === 1 ? amounts[0] : "";
-        const uniqueLeverage = new Set(leverages).size === 1 ? leverages[0] : "";
-
-        elements.capitalAmount.value = uniqueAmount;
-
-        if (autotraderConfig.market === "Spot") {
-          elements.capitalLeverageGroup.innerHTML = "";
-          elements.capitalLeverage = null;
-          elements.leverageValidation = null;
-        } else {
-          elements.capitalLeverageGroup.innerHTML = `
-            <label class="field-label" for="capital-leverage">Apply Default Leverage</label>
-            <input class="field-input" id="capital-leverage" type="number" min="1" max="100" step="1" placeholder="e.g. 5" />
-            <span class="validation-text" id="leverage-validation"></span>
-          `;
-          elements.capitalLeverage = document.getElementById("capital-leverage");
-          elements.leverageValidation = document.getElementById("leverage-validation");
-          elements.capitalLeverage.value = uniqueLeverage;
-          if (elements.capitalLeverage && !elements.capitalLeverage.dataset.bound) {
-            elements.capitalLeverage.addEventListener("input", handleCapitalLeverageInput);
-            elements.capitalLeverage.dataset.bound = "true";
-          }
-        }
-
-        const hasInvalidAmount = autotraderConfig.pairs.some((pair) => Number(pair.tradeAmount) <= 0);
-        elements.capitalValidation.textContent = hasInvalidAmount
-          ? "Trade amounts must be greater than 0."
-          : "";
-
-        if (autotraderConfig.market !== "Spot" && elements.leverageValidation) {
-          const hasInvalidLeverage = autotraderConfig.pairs.some(
-            (pair) => Number(pair.leverage) < 1 || Number(pair.leverage) > 100
-          );
-          elements.leverageValidation.textContent = hasInvalidLeverage
-            ? "Leverage must stay between 1x and 100x."
-            : "";
-        }
-      };
-
       const canSubmit = () =>
         autotraderConfig.market &&
         autotraderConfig.exchange &&
@@ -1876,7 +1808,6 @@
         renderPlans();
         renderPairs();
         renderSummary();
-        renderCapitalControls();
         renderSubmitState();
       };
 
@@ -1988,15 +1919,6 @@
         if (autotraderConfig.market === "Spot" && (key === "leverage" || key === "leverageType")) {
           return;
         }
-        if (autotraderConfig.market === "Futures" && key === "leverage") {
-          const value = Number(target.value);
-          if (Number.isFinite(value)) {
-            leverageMemory.defaultLeverage = value;
-          }
-        }
-        if (autotraderConfig.market === "Futures" && key === "leverageType") {
-          leverageMemory.leverageType = target.value;
-        }
         updatePair(index, key, target.value);
       });
 
@@ -2011,33 +1933,6 @@
         }
       });
 
-      elements.capitalAmount.addEventListener("input", (event) => {
-        const value = Number(event.target.value);
-        if (!Number.isFinite(value)) {
-          return;
-        }
-        autotraderConfig.pairs = autotraderConfig.pairs.map((pair) => ({
-          ...pair,
-          tradeAmount: value,
-        }));
-        render();
-      });
-
-      const handleCapitalLeverageInput = (event) => {
-        if (autotraderConfig.market === "Spot") {
-          return;
-        }
-        const value = Number(event.target.value);
-        if (!Number.isFinite(value)) {
-          return;
-        }
-        leverageMemory.defaultLeverage = value;
-        autotraderConfig.pairs = autotraderConfig.pairs.map((pair) => ({
-          ...pair,
-          leverage: value,
-        }));
-        render();
-      };
 
       elements.cancelButton.addEventListener("click", () => {
         window.location.href = "../autotraders.html";
