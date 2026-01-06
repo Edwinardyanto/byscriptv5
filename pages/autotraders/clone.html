@@ -17,7 +17,7 @@
       }
 
       .page-autotrader-config .section-subtitle {
-        color: var(--color-muted);
+        color: rgba(255, 255, 255, 0.6);
         font-size: 0.95rem;
       }
 
@@ -54,9 +54,14 @@
       .page-autotrader-config .config-section-title {
         font-size: 1rem;
         font-weight: 600;
+        color: rgba(255, 255, 255, 0.85);
       }
 
-      .page-autotrader-config .config-section-description {
+      .page-autotrader-config .config-section-description,
+      .page-autotrader-config .section-description,
+      .page-autotrader-config .section-helper,
+      .page-autotrader-config .pairs-description,
+      .page-autotrader-config .capital-description {
         color: rgba(255, 255, 255, 0.7);
         font-size: 0.85rem;
       }
@@ -73,7 +78,7 @@
       .page-autotrader-config .toggle-button {
         border: 1px solid transparent;
         background: transparent;
-        color: rgba(255, 255, 255, 0.7);
+        color: rgba(255, 255, 255, 0.35);
         border-radius: 999px;
         padding: 6px 16px;
         cursor: pointer;
@@ -126,7 +131,7 @@
         border-radius: 999px;
         border: 1px solid rgba(255, 255, 255, 0.15);
         font-size: 0.7rem;
-        color: var(--color-muted);
+        color: rgba(255, 255, 255, 0.6);
       }
 
       .page-autotrader-config .status-dot {
@@ -203,7 +208,7 @@
       }
 
       .page-autotrader-config .helper-text {
-        color: rgba(255, 255, 255, 0.7);
+        color: rgba(255, 255, 255, 0.6);
         font-size: 0.75rem;
       }
 
@@ -222,7 +227,7 @@
         font-size: 0.75rem;
         text-transform: uppercase;
         letter-spacing: 0.1em;
-        color: rgba(255, 255, 255, 0.55);
+        color: rgba(255, 255, 255, 0.6);
       }
 
       .page-autotrader-config .field-input {
@@ -262,7 +267,7 @@
       }
 
       .page-autotrader-config .summary-meta {
-        color: rgba(255, 255, 255, 0.7);
+        color: rgba(255, 255, 255, 0.6);
         font-size: 0.8rem;
       }
 
@@ -280,7 +285,7 @@
         font-size: 0.7rem;
         text-transform: uppercase;
         letter-spacing: 0.1em;
-        color: rgba(255, 255, 255, 0.55);
+        color: rgba(255, 255, 255, 0.6);
       }
 
       .page-autotrader-config .summary-value {
@@ -298,7 +303,7 @@
         border-radius: 999px;
         border: 1px solid rgba(255, 255, 255, 0.14);
         font-size: 0.75rem;
-        color: rgba(255, 255, 255, 0.7);
+        color: rgba(255, 255, 255, 0.6);
         background: rgba(255, 255, 255, 0.05);
       }
 
@@ -350,7 +355,7 @@
         padding: 14px;
         border-radius: 12px;
         border: 1px dashed rgba(255, 255, 255, 0.12);
-        color: rgba(255, 255, 255, 0.7);
+        color: rgba(255, 255, 255, 0.6);
         font-size: 0.85rem;
       }
 
@@ -411,13 +416,13 @@
 
       .page-autotrader-config .drawer-subtitle {
         font-size: 0.85rem;
-        color: var(--color-muted);
+        color: rgba(255, 255, 255, 0.6);
       }
 
       .page-autotrader-config .drawer-close {
         border: none;
         background: transparent;
-        color: var(--color-muted);
+        color: rgba(255, 255, 255, 0.6);
         font-size: 1.2rem;
         cursor: pointer;
         position: absolute;
@@ -460,7 +465,7 @@
 
       .page-autotrader-config .drawer-helper {
         font-size: 0.78rem;
-        color: rgba(255, 255, 255, 0.7);
+        color: rgba(255, 255, 255, 0.6);
       }
 
       .page-autotrader-config .pair-universe {
@@ -524,12 +529,12 @@
 
       .page-autotrader-config .pair-selector-meta {
         font-size: 0.78rem;
-        color: rgba(255, 255, 255, 0.7);
+        color: rgba(255, 255, 255, 0.6);
       }
 
       .page-autotrader-config .pair-selector-action {
         font-size: 0.78rem;
-        color: rgba(255, 255, 255, 0.7);
+        color: rgba(255, 255, 255, 0.6);
         border: none;
         background: transparent;
         cursor: pointer;
@@ -564,7 +569,7 @@
 
       .page-autotrader-config .pair-tooltip {
         font-size: 0.75rem;
-        color: rgba(255, 255, 255, 0.7);
+        color: rgba(255, 255, 255, 0.6);
         padding: 8px 10px;
         border-radius: 10px;
         background: rgba(255, 255, 255, 0.04);
@@ -622,11 +627,11 @@
         align-items: center;
         gap: 8px;
         font-size: 0.72rem;
-        color: rgba(255, 255, 255, 0.7);
+        color: rgba(255, 255, 255, 0.6);
       }
 
       .page-autotrader-config .pair-star {
-        color: rgba(255, 255, 255, 0.4);
+        color: rgba(255, 255, 255, 0.35);
       }
 
       .page-autotrader-config .pair-check {
@@ -659,7 +664,7 @@
       .page-autotrader-config .pair-overlay-title {
         font-size: 0.95rem;
         font-weight: 600;
-        color: var(--color-text);
+        color: rgba(255, 255, 255, 0.85);
       }
 
       .page-autotrader-config .pair-overlay-chips {
@@ -683,6 +688,18 @@
         align-items: center;
         gap: 12px;
         background: rgba(15, 12, 24, 0.92);
+      }
+
+      .page-autotrader-config .form-helper,
+      .page-autotrader-config .input-hint {
+        color: rgba(255, 255, 255, 0.6);
+      }
+
+      .page-autotrader-config .field-input::placeholder,
+      .page-autotrader-config .drawer-input::placeholder,
+      .page-autotrader-config .pair-search::placeholder,
+      .page-autotrader-config .table-input::placeholder {
+        color: rgba(255, 255, 255, 0.45);
       }
     </style>
   </head>
