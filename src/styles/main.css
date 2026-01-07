@@ -1625,7 +1625,20 @@ main {
   min-height: 0;
 }
 
+.page-autotraders {
+  height: 100vh;
+  overflow: hidden;
+}
+
+.page-autotraders .app-body {
+  overflow: hidden;
+}
+
 .page-autotraders .autotraders-table {
+  --table-header-height: 30px;
+  --table-row-height: 32px;
+  --table-visible-rows: 9;
+  --table-pagination-height: 32px;
   min-height: 0;
 }
 
@@ -1633,12 +1646,17 @@ main {
   display: flex;
   flex-direction: column;
   min-height: 0;
+  height: calc(
+    var(--table-header-height) + (var(--table-row-height) * var(--table-visible-rows)) +
+      var(--table-pagination-height)
+  );
 }
 
 .page-autotraders .autotraders-table .table-scroll {
   flex: 1;
   min-height: 0;
-  overflow-y: auto;
+  height: calc(var(--table-header-height) + (var(--table-row-height) * var(--table-visible-rows)));
+  overflow: hidden;
 }
 
 .page-autotraders .autotraders-performance .section-header {
@@ -1806,7 +1824,9 @@ main {
   letter-spacing: 0.08em;
   color: var(--color-muted);
   text-transform: uppercase;
-  padding: 8px 6px;
+  height: var(--table-header-height);
+  line-height: var(--table-header-height);
+  padding: 0 6px;
   border-bottom: 1px solid var(--color-border);
 }
 
@@ -1826,7 +1846,7 @@ main {
 
 .page-autotraders .autotraders-table tbody tr {
   background: rgba(255, 255, 255, 0.02);
-  height: 44px;
+  height: var(--table-row-height);
 }
 
 .page-autotraders .autotraders-table tbody tr + tr {
@@ -1834,15 +1854,24 @@ main {
 }
 
 .page-autotraders .autotraders-table td {
-  padding: 8px 6px;
+  height: var(--table-row-height);
+  line-height: var(--table-row-height);
+  padding: 0 6px;
   color: var(--color-text);
   vertical-align: middle;
+}
+
+.page-autotraders .autotraders-table th,
+.page-autotraders .autotraders-table td {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .page-autotraders .status-pill {
   border-radius: 999px;
   font-size: 0.68rem;
-  padding: 3px 10px;
+  padding: 2px 10px;
   letter-spacing: 0.08em;
 }
 
@@ -1872,7 +1901,12 @@ main {
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid var(--color-border);
   color: var(--color-text);
-  padding: 4px 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 22px;
+  line-height: 22px;
+  padding: 0 12px;
   border-radius: var(--radius-sm);
   font-size: 0.78rem;
   box-shadow: none;
@@ -1883,7 +1917,8 @@ main {
   justify-content: center;
   align-items: center;
   gap: 6px;
-  margin-top: 6px;
+  height: var(--table-pagination-height);
+  margin-top: 0;
 }
 
 .page-autotraders .page-button,
