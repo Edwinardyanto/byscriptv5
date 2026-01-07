@@ -153,7 +153,6 @@
         box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
         padding: 6px 0;
         max-height: 360px;
-        overflow-y: auto;
         display: none;
         z-index: 20;
       }
@@ -468,7 +467,7 @@
         position: fixed;
         top: 0;
         right: 0;
-        height: 100vh;
+        height: 100%;
         width: min(460px, 92vw);
         background: rgba(20, 16, 30, 0.98);
         border-left: 1px solid rgba(255, 255, 255, 0.08);
@@ -521,9 +520,9 @@
 
       .page-autotrader-config .drawer-body {
         padding: 18px 20px;
-        overflow-y: auto;
         display: grid;
         gap: 18px;
+        min-height: 0;
       }
 
       .page-autotrader-config .drawer-section {
@@ -670,8 +669,8 @@
         display: grid;
         gap: 6px;
         max-height: 220px;
-        overflow-y: auto;
         padding-right: 4px;
+        min-height: 0;
       }
 
       .page-autotrader-config .pair-option {
@@ -761,7 +760,7 @@
         display: flex;
         flex-wrap: wrap;
         gap: 8px;
-        overflow-y: auto;
+        min-height: 0;
       }
 
       .page-autotrader-config .pair-overlay-footer {
@@ -799,58 +798,58 @@
         <span class="sidebar-toggle-line"></span>
         <span class="sidebar-toggle-line"></span>
       </button>
-      <header class="section section--header section-header">
+      <header class="header section section--header section-header">
         <div class="section-header">
           <h1 class="section-title">Autotrader Configurator</h1>
         </div>
       </header>
-      <aside>
-        <nav class="sidebar" aria-label="Primary">
-          <div class="sidebar-header">
-            <div class="sidebar-logo" aria-hidden="true">B</div>
-            <span class="sidebar-logo-text">ByScript</span>
-          </div>
-          <ul>
-            <li>
-              <a class="sidebar-item" href="../../index.html">
-                <span class="sidebar-icon"></span>
-                <span class="sidebar-label">Dashboard</span>
-              </a>
-            </li>
-            <li>
-              <a class="sidebar-item sidebar-item--active" href="../autotraders.html">
-                <span class="sidebar-icon"></span>
-                <span class="sidebar-label">Autotraders</span>
-              </a>
-            </li>
-            <li>
-              <a class="sidebar-item" href="../exchanges.html">
-                <span class="sidebar-icon"></span>
-                <span class="sidebar-label">Exchanges</span>
-              </a>
-            </li>
-            <li>
-              <a class="sidebar-item" href="../activity.html">
-                <span class="sidebar-icon"></span>
-                <span class="sidebar-label">Activity</span>
-              </a>
-            </li>
-            <li>
-              <a class="sidebar-item" href="../backtest.html">
-                <span class="sidebar-icon"></span>
-                <span class="sidebar-label">Strategy Backtest</span>
-              </a>
-            </li>
-            <li>
-              <a class="sidebar-item" href="../affiliate.html">
-                <span class="sidebar-icon"></span>
-                <span class="sidebar-label">Affiliate</span>
-              </a>
-            </li>
-          </ul>
-        </nav>
-      </aside>
-      <div class="content">
+      <div class="app-body">
+        <aside>
+          <nav class="sidebar" aria-label="Primary">
+            <div class="sidebar-header">
+              <div class="sidebar-logo" aria-hidden="true">B</div>
+              <span class="sidebar-logo-text">ByScript</span>
+            </div>
+            <ul>
+              <li>
+                <a class="sidebar-item" href="../../index.html">
+                  <span class="sidebar-icon"></span>
+                  <span class="sidebar-label">Dashboard</span>
+                </a>
+              </li>
+              <li>
+                <a class="sidebar-item sidebar-item--active" href="../autotraders.html">
+                  <span class="sidebar-icon"></span>
+                  <span class="sidebar-label">Autotraders</span>
+                </a>
+              </li>
+              <li>
+                <a class="sidebar-item" href="../exchanges.html">
+                  <span class="sidebar-icon"></span>
+                  <span class="sidebar-label">Exchanges</span>
+                </a>
+              </li>
+              <li>
+                <a class="sidebar-item" href="../activity.html">
+                  <span class="sidebar-icon"></span>
+                  <span class="sidebar-label">Activity</span>
+                </a>
+              </li>
+              <li>
+                <a class="sidebar-item" href="../backtest.html">
+                  <span class="sidebar-icon"></span>
+                  <span class="sidebar-label">Strategy Backtest</span>
+                </a>
+              </li>
+              <li>
+                <a class="sidebar-item" href="../affiliate.html">
+                  <span class="sidebar-icon"></span>
+                  <span class="sidebar-label">Affiliate</span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </aside>
         <main class="main">
           <div class="configurator-layout">
             <section class="config-panel">
@@ -882,7 +881,7 @@
                     </div>
                     <span class="selector-chevron">▾</span>
                   </button>
-                  <div class="selector-panel" id="exchange-panel" role="listbox"></div>
+                  <div class="selector-panel scrollable" id="exchange-panel" role="listbox"></div>
                 </div>
                 <div class="empty-state" id="exchange-empty">Select a market to view available exchanges.</div>
               </div>
@@ -902,7 +901,7 @@
                     </div>
                     <span class="selector-chevron">▾</span>
                   </button>
-                  <div class="selector-panel" id="plan-panel" role="listbox"></div>
+                  <div class="selector-panel scrollable" id="plan-panel" role="listbox"></div>
                 </div>
                 <div class="empty-state" id="plan-empty">Select a market to view trading plans.</div>
               </div>
@@ -974,7 +973,7 @@
         <div class="drawer-title">Create Trading Plan</div>
         <button class="drawer-close" type="button" id="close-plan-drawer" aria-label="Close">×</button>
       </div>
-      <div class="drawer-body">
+      <div class="drawer-body scrollable">
         <div class="drawer-section">
           <div class="drawer-section-title">Plan Basics</div>
           <input class="drawer-input" type="text" id="plan-name-input" placeholder="Plan name" />
@@ -1006,7 +1005,7 @@
               <div class="pair-tooltip" id="pair-tooltip">
                 Apply one strategy to multiple pairs. Select pairs with the same quote currency.
               </div>
-              <div class="pair-list" id="pair-universe-list"></div>
+              <div class="pair-list scrollable" id="pair-universe-list"></div>
             </div>
           </div>
           <div class="drawer-helper">
@@ -1019,7 +1018,7 @@
             <button class="drawer-close" type="button" id="pair-overlay-close" aria-label="Close">×</button>
           </div>
           <input class="pair-search" type="text" id="pair-overlay-search" placeholder="Search selected pairs" />
-          <div class="pair-overlay-chips" id="pair-overlay-chips"></div>
+          <div class="pair-overlay-chips scrollable" id="pair-overlay-chips"></div>
           <div class="pair-overlay-footer">
             <button class="pair-selector-action" type="button" id="pair-overlay-unselect">Unselect all pairs</button>
           </div>
