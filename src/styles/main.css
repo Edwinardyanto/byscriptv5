@@ -236,26 +236,37 @@ body::after {
   font-size: 0.95rem;
 }
 
-.app {
+.app,
+#app {
   height: 100vh;
   display: grid;
-  grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
+  grid-template-rows: var(--header-height) minmax(0, 1fr);
   min-width: 0;
+  min-height: 0;
   position: relative;
   z-index: 2;
 }
 
-#app {
+.app-body {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
   min-width: 0;
   min-height: 0;
 }
 
-.app.has-sidebar-collapsed,
-#app.has-sidebar-collapsed {
+.app.has-sidebar-collapsed .app-body,
+#app.has-sidebar-collapsed .app-body {
   grid-template-columns: 0 minmax(0, 1fr);
 }
 
-#app > aside {
+#app > header,
+#app > .app-body {
+  min-width: 0;
+  min-height: 0;
+}
+
+.app-body > aside {
+  width: var(--sidebar-width);
   min-width: 0;
   min-height: 0;
 }
@@ -300,19 +311,9 @@ main {
   margin-inline: 0;
 }
 
-.content {
-  display: grid;
-  grid-template-rows: var(--header-height) minmax(0, 1fr);
-  gap: var(--gap-inner);
-  min-width: 0;
-  min-height: 0;
-  position: relative;
-  overflow: hidden;
-}
-
 .app,
 #app,
-.content,
+.app-body,
 .main,
 .section,
 .section-body,
@@ -399,17 +400,17 @@ main {
   overflow: hidden;
 }
 
-#app > .content > main > div:nth-child(1) {
+#app > .app-body > .main > div:nth-child(1) {
   flex: 2 1 0;
   min-height: 0;
 }
 
-#app > .content > main > div.dashboard-row.dashboard-row--split.dashboard-row--summary {
+#app > .app-body > .main > div.dashboard-row.dashboard-row--split.dashboard-row--summary {
   flex: 1.5 1 0;
   min-height: 0;
 }
 
-#app > .content > main > div.dashboard-row.dashboard-row--split.dashboard-row--bottom {
+#app > .app-body > .main > div.dashboard-row.dashboard-row--split.dashboard-row--bottom {
   flex: 1 1 0;
   min-height: 0;
 }
@@ -1613,6 +1614,30 @@ main {
   flex-direction: column;
   gap: 12px;
   min-height: 0;
+}
+
+.page-autotraders .autotraders-page {
+  height: 100%;
+  display: grid;
+  grid-template-rows: auto auto 1fr;
+  gap: 12px;
+  min-height: 0;
+}
+
+.page-autotraders .autotraders-table {
+  min-height: 0;
+}
+
+.page-autotraders .autotraders-table .section-body {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.page-autotraders .autotraders-table .table-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
 }
 
 .page-autotraders .autotraders-performance .section-header {

@@ -189,61 +189,62 @@
         <span class="sidebar-toggle-line"></span>
         <span class="sidebar-toggle-line"></span>
       </button>
-      <aside>
-        <nav class="sidebar" aria-label="Primary">
-          <div class="sidebar-header">
-            <div class="sidebar-logo" aria-hidden="true">B</div>
-            <span class="sidebar-logo-text">ByScript</span>
-          </div>
-          <ul>
-            <li>
-              <a class="sidebar-item" href="../index.html">
-                <span class="sidebar-icon"></span>
-                <span class="sidebar-label">Dashboard</span>
-              </a>
-            </li>
-            <li>
-              <a class="sidebar-item sidebar-item--active" href="autotraders.html">
-                <span class="sidebar-icon"></span>
-                <span class="sidebar-label">Autotraders</span>
-              </a>
-            </li>
-            <li>
-              <a class="sidebar-item" href="exchanges.html">
-                <span class="sidebar-icon"></span>
-                <span class="sidebar-label">Exchanges</span>
-              </a>
-            </li>
-            <li>
-              <a class="sidebar-item" href="activity.html">
-                <span class="sidebar-icon"></span>
-                <span class="sidebar-label">Activity</span>
-              </a>
-            </li>
-            <li>
-              <a class="sidebar-item" href="backtest.html">
-                <span class="sidebar-icon"></span>
-                <span class="sidebar-label">Strategy Backtest</span>
-              </a>
-            </li>
-            <li>
-              <a class="sidebar-item" href="affiliate.html">
-                <span class="sidebar-icon"></span>
-                <span class="sidebar-label">Affiliate</span>
-              </a>
-            </li>
-          </ul>
-        </nav>
-      </aside>
-      <div class="content">
-        <header class="header section section--header section-header autotraders-header">
-          <div class="section-header autotraders-header-row">
-            <h1 class="section-title">Autotraders</h1>
-            <a class="button autotraders-add-button" href="autotraders/new.html">+ Add Autotrader</a>
-          </div>
-        </header>
+      <header class="header section section--header section-header autotraders-header">
+        <div class="section-header autotraders-header-row">
+          <h1 class="section-title">Autotraders</h1>
+          <a class="button autotraders-add-button" href="autotraders/new.html">+ Add Autotrader</a>
+        </div>
+      </header>
+      <div class="app-body">
+        <aside>
+          <nav class="sidebar" aria-label="Primary">
+            <div class="sidebar-header">
+              <div class="sidebar-logo" aria-hidden="true">B</div>
+              <span class="sidebar-logo-text">ByScript</span>
+            </div>
+            <ul>
+              <li>
+                <a class="sidebar-item" href="../index.html">
+                  <span class="sidebar-icon"></span>
+                  <span class="sidebar-label">Dashboard</span>
+                </a>
+              </li>
+              <li>
+                <a class="sidebar-item sidebar-item--active" href="autotraders.html">
+                  <span class="sidebar-icon"></span>
+                  <span class="sidebar-label">Autotraders</span>
+                </a>
+              </li>
+              <li>
+                <a class="sidebar-item" href="exchanges.html">
+                  <span class="sidebar-icon"></span>
+                  <span class="sidebar-label">Exchanges</span>
+                </a>
+              </li>
+              <li>
+                <a class="sidebar-item" href="activity.html">
+                  <span class="sidebar-icon"></span>
+                  <span class="sidebar-label">Activity</span>
+                </a>
+              </li>
+              <li>
+                <a class="sidebar-item" href="backtest.html">
+                  <span class="sidebar-icon"></span>
+                  <span class="sidebar-label">Strategy Backtest</span>
+                </a>
+              </li>
+              <li>
+                <a class="sidebar-item" href="affiliate.html">
+                  <span class="sidebar-icon"></span>
+                  <span class="sidebar-label">Affiliate</span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </aside>
         <main class="main autotraders-main">
-          <section class="autotraders-performance section section--primary">
+          <div class="autotraders-page">
+            <section class="autotraders-performance autotraders-chart section section--primary">
             <div class="section-header">
               <div class="section-title-group">
                 <h2 class="section-title">Total Autotraders Performance</h2>
@@ -274,8 +275,8 @@
                 </div>
               </div>
             </div>
-          </section>
-          <section class="autotraders-live section section--secondary">
+            </section>
+            <section class="autotraders-live autotraders-summary section section--secondary">
             <span class="live-indicator" aria-hidden="true"></span>
             <span class="live-item" id="live-autotraders">
               <span class="live-label">Autotraders</span>
@@ -299,35 +300,38 @@
               <span class="live-value" id="live-capital-value">$305,000</span>
             </span>
           </section>
-          <section class="autotraders-table section section--secondary">
-            <div class="section-body">
-              <table>
-            <thead>
-              <tr>
-                <th>Status</th>
-                <th>Trading Plan</th>
-                <th>Pair</th>
-                <th>Exchange</th>
-                <th>Capital</th>
-                <th>PnL ($)</th>
-                <th>Win Rate</th>
-                <th>Running</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody id="autotraders-tbody"></tbody>
-              </table>
-              <div class="table-pagination" aria-label="Pagination">
-                <button class="page-button pagination-btn active" type="button" data-page="1">1</button>
-                <button class="page-button pagination-btn" type="button" data-page="2">2</button>
-                <button class="page-button pagination-btn" type="button" data-page="3">3</button>
-                <button class="page-button pagination-btn" type="button" data-page="4">4</button>
-                <button class="page-button pagination-btn" type="button" data-page="5">5</button>
-                <span class="page-ellipsis">…</span>
-                <button class="page-button next" type="button">Next ›</button>
+            <section class="autotraders-table section section--secondary">
+              <div class="section-body">
+                <div class="table-scroll">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Status</th>
+                        <th>Trading Plan</th>
+                        <th>Pair</th>
+                        <th>Exchange</th>
+                        <th>Capital</th>
+                        <th>PnL ($)</th>
+                        <th>Win Rate</th>
+                        <th>Running</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody id="autotraders-tbody"></tbody>
+                  </table>
+                </div>
+                <div class="table-pagination" aria-label="Pagination">
+                  <button class="page-button pagination-btn active" type="button" data-page="1">1</button>
+                  <button class="page-button pagination-btn" type="button" data-page="2">2</button>
+                  <button class="page-button pagination-btn" type="button" data-page="3">3</button>
+                  <button class="page-button pagination-btn" type="button" data-page="4">4</button>
+                  <button class="page-button pagination-btn" type="button" data-page="5">5</button>
+                  <span class="page-ellipsis">…</span>
+                  <button class="page-button next" type="button">Next ›</button>
+                </div>
               </div>
-            </div>
-          </section>
+            </section>
+          </div>
         </main>
       </div>
     </div>
