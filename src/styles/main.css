@@ -453,13 +453,6 @@ main {
     0 26px 50px rgba(8, 6, 16, 0.6), 0 0 22px rgba(120, 88, 200, 0.08);
 }
 
-.section-title {
-  margin: 0;
-  font-size: 1.15rem;
-  font-weight: 600;
-  letter-spacing: 0.01em;
-}
-
 .section-body {
   flex: 1;
   display: flex;
