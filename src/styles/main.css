@@ -1635,10 +1635,9 @@ main {
 }
 
 .page-autotraders .autotraders-table {
-  --table-header-height: 30px;
-  --table-row-height: 32px;
-  --table-visible-rows: 9;
-  --table-pagination-height: 32px;
+  --table-header-height: 40px;
+  --table-row-height: 30px;
+  --table-visible-rows: 10;
   min-height: 0;
 }
 
