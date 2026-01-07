@@ -307,7 +307,7 @@
                     <thead>
                       <tr>
                         <th>Status</th>
-                        <th>Trading Plan</th>
+                        <th class="col-trading-plan">Trading Plan</th>
                         <th>Pair</th>
                         <th>Exchange</th>
                         <th>Capital</th>
@@ -481,7 +481,7 @@
         return `
           <tr>
             <td><span class="status-pill ${statusClass}">${row.status}</span></td>
-            <td>${row.name}</td>
+            <td class="col-trading-plan"><span class="trading-plan-name">${row.name}</span></td>
             <td>${row.pair}</td>
             <td>${row.exchange}</td>
             <td>$${row.capital.toLocaleString()}</td>
