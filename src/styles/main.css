@@ -1634,9 +1634,9 @@ main {
 }
 
 .page-autotraders .autotraders-table {
-  --table-header-height: 28px;
-  --table-row-height: 28px;
-  --table-pagination-height: 28px;
+  --table-header-height: 24px;
+  --table-row-height: 24px;
+  --table-pagination-height: 24px;
   min-height: auto;
 }
 
@@ -1670,7 +1670,7 @@ main {
 }
 
 .page-autotraders .autotraders-table {
-  padding: 8px 14px;
+  padding: 6px 14px;
 }
 
 .page-autotraders .performance-metrics {
@@ -1794,14 +1794,14 @@ main {
 }
 
 .page-autotraders .autotraders-table .section-body {
-  gap: 6px;
-  margin-top: 4px;
+  gap: 4px;
+  margin-top: 0;
 }
 
 .page-autotraders .autotraders-table table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   table-layout: fixed;
 }
 
@@ -1817,9 +1817,48 @@ main {
   border-bottom: 1px solid var(--color-border);
 }
 
+.page-autotraders .autotraders-table .col-status {
+  width: 92px;
+  max-width: 92px;
+}
+
 .page-autotraders .autotraders-table .col-trading-plan {
-  width: 180px;
-  max-width: 180px;
+  min-width: 180px;
+}
+
+.page-autotraders .autotraders-table .col-pair {
+  width: 80px;
+  max-width: 80px;
+}
+
+.page-autotraders .autotraders-table .col-exchange {
+  width: 90px;
+  max-width: 90px;
+}
+
+.page-autotraders .autotraders-table .col-capital {
+  width: 92px;
+  max-width: 92px;
+}
+
+.page-autotraders .autotraders-table .col-pnl {
+  width: 86px;
+  max-width: 86px;
+}
+
+.page-autotraders .autotraders-table .col-win-rate {
+  width: 78px;
+  max-width: 78px;
+}
+
+.page-autotraders .autotraders-table .col-running {
+  width: 78px;
+  max-width: 78px;
+}
+
+.page-autotraders .autotraders-table .col-action {
+  width: 78px;
+  max-width: 78px;
 }
 
 .page-autotraders .autotraders-table .trading-plan-name {
@@ -1860,10 +1899,10 @@ main {
   align-items: center;
   justify-content: center;
   min-width: 70px;
-  height: 22px;
-  padding: 0 10px;
+  height: 18px;
+  padding: 0 8px;
   border-radius: 999px;
-  font-size: 11px;
+  font-size: 0.6rem;
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -1902,11 +1941,11 @@ main {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  height: 22px;
-  line-height: 22px;
-  padding: 0 12px;
+  height: 20px;
+  line-height: 20px;
+  padding: 0 10px;
   border-radius: var(--radius-sm);
-  font-size: 0.78rem;
+  font-size: 0.72rem;
   box-shadow: none;
 }
 

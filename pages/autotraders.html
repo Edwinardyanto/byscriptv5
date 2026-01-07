@@ -305,15 +305,15 @@
                 <table>
                   <thead>
                     <tr>
-                      <th>Status</th>
+                      <th class="col-status">Status</th>
                       <th class="col-trading-plan">Trading Plan</th>
-                      <th>Pair</th>
-                      <th>Exchange</th>
-                      <th>Capital</th>
-                      <th>PnL ($)</th>
-                      <th>Win Rate</th>
-                      <th>Running</th>
-                      <th>Action</th>
+                      <th class="col-pair">Pair</th>
+                      <th class="col-exchange">Exchange</th>
+                      <th class="col-capital">Capital</th>
+                      <th class="col-pnl">PnL ($)</th>
+                      <th class="col-win-rate">Win Rate</th>
+                      <th class="col-running">Running</th>
+                      <th class="col-action">Action</th>
                     </tr>
                   </thead>
                   <tbody id="autotraders-tbody"></tbody>
@@ -478,15 +478,15 @@
         const actionLabel = row.status === "ACTIVE" ? "Stop" : "Start";
         return `
           <tr>
-            <td><span class="status-pill ${statusClass}">${row.status}</span></td>
+            <td class="col-status"><span class="status-pill ${statusClass}">${row.status}</span></td>
             <td class="col-trading-plan"><span class="trading-plan-name">${row.name}</span></td>
-            <td>${row.pair}</td>
-            <td>${row.exchange}</td>
-            <td>$${row.capital.toLocaleString()}</td>
-            <td class="${pnlClass}">${row.pnl < 0 ? "-" : "+"}$${Math.abs(row.pnl)}</td>
-            <td>${row.winRate}%</td>
-            <td>${row.running}</td>
-            <td><button class="table-action action-btn" type="button" data-id="${row.id}">${actionLabel}</button></td>
+            <td class="col-pair">${row.pair}</td>
+            <td class="col-exchange">${row.exchange}</td>
+            <td class="col-capital">$${row.capital.toLocaleString()}</td>
+            <td class="col-pnl ${pnlClass}">${row.pnl < 0 ? "-" : "+"}$${Math.abs(row.pnl)}</td>
+            <td class="col-win-rate">${row.winRate}%</td>
+            <td class="col-running">${row.running}</td>
+            <td class="col-action"><button class="table-action action-btn" type="button" data-id="${row.id}">${actionLabel}</button></td>
           </tr>
         `;
       };
