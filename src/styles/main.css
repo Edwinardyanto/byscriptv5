@@ -1636,7 +1636,7 @@ main {
 
 .page-autotraders .autotraders-table {
   --table-header-height: 40px;
-  --table-row-height: 30px;
+  --table-row-height: 38px;
   --table-visible-rows: 10;
   min-height: 0;
 }
@@ -1854,7 +1854,6 @@ main {
 
 .page-autotraders .autotraders-table td {
   height: var(--table-row-height);
-  line-height: var(--table-row-height);
   padding: 0 6px;
   color: var(--color-text);
   vertical-align: middle;
@@ -1870,7 +1869,6 @@ main {
 .page-autotraders .status-pill {
   border-radius: 999px;
   font-size: 0.68rem;
-  padding: 2px 10px;
   letter-spacing: 0.08em;
 }
 
