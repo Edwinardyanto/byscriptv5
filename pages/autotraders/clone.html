@@ -424,6 +424,12 @@
         display: flex;
         flex-wrap: wrap;
         gap: 6px;
+        --summary-tag-row-height: 26px;
+        --summary-tag-row-gap: 6px;
+        max-height: calc((var(--summary-tag-row-height) * 9) + (var(--summary-tag-row-gap) * 8));
+        overflow-y: auto;
+        overflow-x: hidden;
+        scrollbar-gutter: stable;
       }
 
       .page-autotrader-config .summary-tag {
@@ -431,6 +437,7 @@
         border-radius: 999px;
         border: 1px solid rgba(255, 255, 255, 0.14);
         font-size: 0.75rem;
+        line-height: 1.2;
         color: rgba(255, 255, 255, 0.6);
         background: rgba(255, 255, 255, 0.05);
       }
