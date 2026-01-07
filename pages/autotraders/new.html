@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="../../src/styles/main.css">
     <style>
       .page-autotrader-config {
+        --config-panel-max-height: 680px;
         --pairs-row-height: 48px;
         --pairs-visible-rows: 5;
         --pairs-scroll-padding: 8px;
@@ -374,6 +375,10 @@
 
       .page-autotrader-config .summary-panel {
         position: sticky;
+        max-height: var(--config-panel-max-height);
+        height: var(--config-panel-max-height);
+        display: flex;
+        flex-direction: column;
       }
 
       .page-autotrader-config .summary-header {
@@ -394,13 +399,24 @@
       }
 
       .page-autotrader-config .summary-list {
-        display: grid;
+        display: flex;
+        flex-direction: column;
         gap: 12px;
+        flex: 1 1 auto;
+        min-height: 0;
       }
 
       .page-autotrader-config .summary-item {
         display: grid;
         gap: 4px;
+      }
+
+      .page-autotrader-config .summary-item--pairs {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        flex: 1 1 auto;
+        min-height: 0;
       }
 
       .page-autotrader-config .summary-label {
@@ -418,6 +434,10 @@
         display: flex;
         flex-wrap: wrap;
         gap: 6px;
+        flex: 1 1 auto;
+        min-height: 0;
+        overflow-y: auto;
+        padding-right: 4px;
       }
 
       .page-autotrader-config .summary-tag {
@@ -981,7 +1001,7 @@
                   <span class="summary-label">Total Capital</span>
                   <span class="summary-value" id="summary-capital">$0</span>
                 </div>
-                <div class="summary-item">
+                <div class="summary-item summary-item--pairs">
                   <span class="summary-label">Pairs</span>
                   <div class="summary-tags" id="summary-pairs"></div>
                 </div>
