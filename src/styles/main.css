@@ -1613,15 +1613,20 @@ main {
 .page-autotraders .autotraders-main {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  min-height: auto;
+  gap: var(--gap-inner);
+  height: calc(100vh - var(--header-height));
+  overflow: hidden;
+  min-height: 0;
 }
 
 .page-autotraders .autotraders-page {
-  display: grid;
-  grid-template-rows: auto auto auto;
-  gap: 12px;
-  min-height: auto;
+  --autotraders-performance-height: calc((100% - (var(--gap-inner) * 2)) * (2 / 4.5));
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-inner);
+  height: 100%;
+  min-height: 0;
 }
 
 .page-autotraders {
@@ -1635,15 +1640,37 @@ main {
 
 .page-autotraders .autotraders-table {
   --table-header-height: 28px;
-  --table-row-height: 28px;
   --table-pagination-height: 28px;
-  min-height: auto;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .page-autotraders .autotraders-table .section-body {
-  display: grid;
-  grid-auto-rows: auto;
-  min-height: auto;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.page-autotraders .autotraders-performance {
+  flex: 0 0 var(--autotraders-performance-height);
+  height: var(--autotraders-performance-height);
+  overflow: hidden;
+}
+
+.page-autotraders .autotraders-live {
+  position: absolute;
+  top: calc(var(--autotraders-performance-height) + var(--gap-inner));
+  left: 0;
+  z-index: 1;
+}
+
+.page-autotraders .autotraders-table .section-header {
+  height: 32px;
+  flex: 0 0 32px;
+  overflow: hidden;
 }
 
 .page-autotraders .autotraders-performance .section-header {
@@ -1660,6 +1687,9 @@ main {
 
 .page-autotraders .autotraders-performance .section-body {
   position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .page-autotraders .performance-layout {
@@ -1803,6 +1833,7 @@ main {
   border-collapse: collapse;
   font-size: 0.85rem;
   table-layout: fixed;
+  height: calc(100% - var(--table-pagination-height));
 }
 
 .page-autotraders .autotraders-table thead th {
@@ -1815,6 +1846,19 @@ main {
   line-height: var(--table-header-height);
   padding: 0 6px;
   border-bottom: 1px solid var(--color-border);
+}
+
+.page-autotraders .autotraders-table thead,
+.page-autotraders .autotraders-table tbody tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+
+.page-autotraders .autotraders-table tbody {
+  display: block;
+  height: calc(100% - var(--table-header-height));
+  overflow: hidden;
 }
 
 .page-autotraders .autotraders-table .col-trading-plan {
@@ -1833,7 +1877,7 @@ main {
 
 .page-autotraders .autotraders-table tbody tr {
   background: rgba(255, 255, 255, 0.02);
-  height: var(--table-row-height);
+  height: calc(100% / 10);
 }
 
 .page-autotraders .autotraders-table tbody tr + tr {
@@ -1841,8 +1885,8 @@ main {
 }
 
 .page-autotraders .autotraders-table td {
-  height: var(--table-row-height);
-  line-height: var(--table-row-height);
+  height: 100%;
+  line-height: 1.2;
   padding: 0 6px;
   color: var(--color-text);
   vertical-align: middle;
