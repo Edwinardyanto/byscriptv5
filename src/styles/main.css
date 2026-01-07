@@ -1856,22 +1856,33 @@ main {
 }
 
 .page-autotraders .status-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 70px;
+  height: 22px;
+  padding: 0 10px;
   border-radius: 999px;
-  font-size: 0.68rem;
-  padding: 2px 10px;
-  letter-spacing: 0.08em;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  line-height: 1;
+  box-shadow: none !important;
+  filter: none !important;
+  background-image: none;
 }
 
-.page-autotraders .status-pill--active {
-  background: rgba(200, 242, 107, 0.16);
-  color: var(--color-accent);
-  border: 1px solid rgba(200, 242, 107, 0.4);
+.page-autotraders .status-pill.active {
+  color: #68fe1d;
+  background: rgba(104, 254, 29, 0.14);
+  border: 1px solid rgba(104, 254, 29, 0.45);
 }
 
-.page-autotraders .status-pill--stopped {
-  background: rgba(255, 123, 123, 0.15);
-  color: rgba(255, 123, 123, 0.85);
-  border: 1px solid rgba(255, 123, 123, 0.4);
+.page-autotraders .status-pill.stopped {
+  color: #ff5f5f;
+  background: rgba(255, 95, 95, 0.14);
+  border: 1px solid rgba(255, 95, 95, 0.45);
 }
 
 .page-autotraders .pnl-positive {
