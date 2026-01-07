@@ -7,6 +7,13 @@
     <link rel="stylesheet" href="../../src/styles/color-tokens.css">
     <link rel="stylesheet" href="../../src/styles/main.css">
     <style>
+      .page-autotrader-config {
+        --config-panel-max-height: 680px;
+        --pairs-row-height: 48px;
+        --pairs-visible-rows: 5;
+        --pairs-scroll-padding: 8px;
+      }
+
       .page-autotrader-config .section--header {
         display: grid;
         gap: 6px;
@@ -31,6 +38,12 @@
         border-radius: var(--radius-lg);
         padding: 18px;
         box-shadow: var(--shadow-soft);
+      }
+
+      .page-autotrader-config .config-panel {
+        max-height: var(--config-panel-max-height);
+        height: var(--config-panel-max-height);
+        overflow: hidden;
       }
 
       .page-autotrader-config .config-section + .config-section {
@@ -285,6 +298,27 @@
       .page-autotrader-config .pairs-table {
         width: 100%;
         border-collapse: collapse;
+      }
+
+      .page-autotrader-config .pairs-table thead,
+      .page-autotrader-config .pairs-table tbody tr {
+        display: table;
+        width: 100%;
+        table-layout: fixed;
+      }
+
+      .page-autotrader-config .pairs.config-section .pairs-table tbody {
+        display: block;
+        max-height: calc(
+          (var(--pairs-row-height) * var(--pairs-visible-rows)) + var(--pairs-scroll-padding)
+        );
+        overflow-y: auto;
+        scrollbar-gutter: stable;
+        padding-bottom: var(--pairs-scroll-padding);
+      }
+
+      .page-autotrader-config .pairs-table tr {
+        height: var(--pairs-row-height);
       }
 
       .page-autotrader-config .pairs-table th,
@@ -905,7 +939,7 @@
                 </div>
                 <div class="empty-state" id="plan-empty">Select a market to view trading plans.</div>
               </div>
-              <div class="config-section" id="section-pairs">
+              <div class="config-section pairs" id="section-pairs">
                 <div class="config-section-header">
                   <div>
                     <div class="config-section-title">Pairs Configuration</div>
