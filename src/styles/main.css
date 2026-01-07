@@ -1614,49 +1614,36 @@ main {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  min-height: 0;
+  min-height: auto;
 }
 
 .page-autotraders .autotraders-page {
-  height: 100%;
   display: grid;
-  grid-template-rows: auto auto 1fr;
+  grid-template-rows: auto auto auto;
   gap: 12px;
-  min-height: 0;
+  min-height: auto;
 }
 
 .page-autotraders {
-  height: 100vh;
-  overflow: hidden;
+  overflow-y: hidden;
 }
 
 .page-autotraders .app-body {
   overflow: hidden;
+  min-height: auto;
 }
 
 .page-autotraders .autotraders-table {
-  --table-header-height: 30px;
-  --table-row-height: 32px;
-  --table-visible-rows: 9;
-  --table-pagination-height: 32px;
-  min-height: 0;
+  --table-header-height: 28px;
+  --table-row-height: 28px;
+  --table-pagination-height: 28px;
+  min-height: auto;
 }
 
 .page-autotraders .autotraders-table .section-body {
-  display: flex;
-  flex-direction: column;
-  min-height: 0;
-  height: calc(
-    var(--table-header-height) + (var(--table-row-height) * var(--table-visible-rows)) +
-      var(--table-pagination-height)
-  );
-}
-
-.page-autotraders .autotraders-table .table-scroll {
-  flex: 1;
-  min-height: 0;
-  height: calc(var(--table-header-height) + (var(--table-row-height) * var(--table-visible-rows)));
-  overflow: hidden;
+  display: grid;
+  grid-auto-rows: auto;
+  min-height: auto;
 }
 
 .page-autotraders .autotraders-performance .section-header {
@@ -1841,7 +1828,7 @@ main {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  line-height: 1.4;
+  line-height: inherit;
 }
 
 .page-autotraders .autotraders-table tbody tr {
