@@ -570,14 +570,22 @@
 
       .page-autotrader-config .drawer-body {
         padding: 14px 20px 16px;
-        display: grid;
-        gap: 14px;
+        display: block;
         min-height: 0;
       }
 
       .page-autotrader-config .drawer-section {
-        display: grid;
-        gap: 6px;
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 16px;
+      }
+
+      .page-autotrader-config .drawer-section:last-child {
+        margin-bottom: 0;
+      }
+
+      .page-autotrader-config .drawer-section > * + * {
+        margin-top: 6px;
       }
 
       .page-autotrader-config .drawer-section-title {
