@@ -80,27 +80,31 @@
 
       .page-autotrader-config .toggle-group {
         display: inline-flex;
-        gap: 8px;
-        background: rgba(255, 255, 255, 0.03);
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        border-radius: 999px;
+        gap: 6px;
         padding: 4px;
+        border-radius: 8px;
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        background: transparent;
+        height: 38px;
+        align-items: center;
       }
 
       .page-autotrader-config .toggle-button {
-        border: 1px solid transparent;
+        border: 1px solid rgba(255, 255, 255, 0.12);
         background: transparent;
-        color: rgba(255, 255, 255, 0.35);
-        border-radius: 999px;
-        padding: 6px 16px;
+        color: rgba(255, 255, 255, 0.55);
+        border-radius: 6px;
+        padding: 6px 14px;
         cursor: pointer;
         font-weight: 600;
+        height: 28px;
+        transition: border-color 0.2s ease, color 0.2s ease, opacity 0.2s ease;
       }
 
       .page-autotrader-config .toggle-button.active {
-        border-color: rgba(104, 254, 29, 0.45);
-        color: #ffffff;
-        background: rgba(104, 254, 29, 0.08);
+        border-color: #68fe1d;
+        color: #000000;
+        background: #68fe1d;
       }
 
       .page-autotrader-config .selector-field {
@@ -515,9 +519,9 @@
         right: 0;
         height: 100%;
         width: min(460px, 92vw);
-        background: rgba(20, 16, 30, 0.98);
-        border-left: 1px solid rgba(255, 255, 255, 0.08);
-        box-shadow: var(--shadow-soft);
+        background: #1a1a1a;
+        border-left: 1px solid rgba(255, 255, 255, 0.06);
+        box-shadow: none;
         transform: translateX(100%);
         transition: transform 0.25s ease;
         display: grid;
@@ -532,9 +536,9 @@
       }
 
       .page-autotrader-config .drawer-header {
-        padding: 20px 20px 12px;
+        padding: 16px 20px 12px;
         border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-        background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(0, 0, 0, 0));
+        background: #141414;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -557,7 +561,7 @@
       .page-autotrader-config .drawer-close {
         border: none;
         background: transparent;
-        color: rgba(255, 255, 255, 0.6);
+        color: rgba(255, 255, 255, 0.55);
         font-size: 1.2rem;
         cursor: pointer;
         position: absolute;
@@ -565,42 +569,60 @@
       }
 
       .page-autotrader-config .drawer-body {
-        padding: 18px 20px;
-        display: grid;
-        gap: 18px;
+        padding: 14px 20px 16px;
+        display: block;
         min-height: 0;
       }
 
       .page-autotrader-config .drawer-section {
-        display: grid;
-        gap: 8px;
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 16px;
+      }
+
+      .page-autotrader-config .drawer-section:last-child {
+        margin-bottom: 0;
+      }
+
+      .page-autotrader-config .drawer-section > * + * {
+        margin-top: 6px;
       }
 
       .page-autotrader-config .drawer-section-title {
-        font-size: 0.85rem;
+        font-size: 0.75rem;
         text-transform: uppercase;
-        letter-spacing: 0.04em;
-        color: rgba(255, 255, 255, 0.85);
+        letter-spacing: 0.12em;
+        color: rgba(255, 255, 255, 0.65);
         font-weight: 600;
       }
 
+      .page-autotrader-config .drawer-label {
+        font-size: 0.8rem;
+        color: rgba(255, 255, 255, 0.85);
+      }
+
       .page-autotrader-config .drawer-input {
-        background: rgba(255, 255, 255, 0.04);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 10px;
-        padding: 10px 12px;
+        background: #111111;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 8px;
+        padding: 9px 12px;
         color: #ffffff;
       }
 
       .page-autotrader-config .drawer-input:focus {
-        border-color: rgba(104, 254, 29, 0.4);
+        border-color: rgba(104, 254, 29, 0.55);
         outline: none;
         box-shadow: none;
       }
 
       .page-autotrader-config .drawer-helper {
         font-size: 0.78rem;
-        color: rgba(255, 255, 255, 0.6);
+        color: rgba(255, 255, 255, 0.55);
+      }
+
+      .page-autotrader-config .drawer-helper-emphasis {
+        font-size: 0.82rem;
+        color: rgba(255, 255, 255, 0.75);
       }
 
       .page-autotrader-config .pair-universe {
@@ -647,15 +669,20 @@
         align-items: center;
         justify-content: space-between;
         gap: 12px;
-        padding: 10px 12px;
-        border-radius: 12px;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        background: rgba(255, 255, 255, 0.04);
+        padding: 8px 12px;
+        border-radius: 8px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: #111111;
         cursor: pointer;
+        transition: border-color 0.2s ease, opacity 0.2s ease;
+      }
+
+      .page-autotrader-config .pair-selector-bar:hover {
+        border-color: rgba(255, 255, 255, 0.18);
       }
 
       .page-autotrader-config .pair-selector-label {
-        font-size: 0.85rem;
+        font-size: 0.82rem;
         color: var(--color-text);
         display: flex;
         align-items: center;
@@ -663,22 +690,22 @@
       }
 
       .page-autotrader-config .pair-selector-meta {
-        font-size: 0.78rem;
-        color: rgba(255, 255, 255, 0.6);
+        font-size: 0.75rem;
+        color: rgba(255, 255, 255, 0.55);
       }
 
       .page-autotrader-config .pair-selector-action {
-        font-size: 0.78rem;
-        color: rgba(255, 255, 255, 0.6);
+        font-size: 0.75rem;
+        color: rgba(255, 255, 255, 0.55);
         border: none;
         background: transparent;
         cursor: pointer;
       }
 
       .page-autotrader-config .pair-dropdown {
-        border: 1px solid rgba(255, 255, 255, 0.15);
-        border-radius: 12px;
-        background: rgba(16, 12, 24, 0.92);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 8px;
+        background: #111111;
         padding: 10px;
         display: none;
         gap: 10px;
@@ -689,15 +716,15 @@
       }
 
       .page-autotrader-config .pair-search {
-        background: rgba(255, 255, 255, 0.04);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 10px;
+        background: #0d0d0d;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 8px;
         padding: 8px 10px;
         color: #ffffff;
       }
 
       .page-autotrader-config .pair-search:focus {
-        border-color: rgba(104, 254, 29, 0.4);
+        border-color: rgba(104, 254, 29, 0.55);
         outline: none;
         box-shadow: none;
       }
@@ -816,13 +843,13 @@
       }
 
       .page-autotrader-config .drawer-footer {
-        padding: 16px 20px;
-        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        padding: 12px 20px;
+        border-top: 1px solid rgba(255, 255, 255, 0.06);
         display: flex;
         justify-content: space-between;
         align-items: center;
         gap: 12px;
-        background: rgba(15, 12, 24, 0.92);
+        background: #141414;
       }
 
       .page-autotrader-config .form-helper,
@@ -833,7 +860,7 @@
       .page-autotrader-config .drawer-input::placeholder,
       .page-autotrader-config .pair-search::placeholder,
       .page-autotrader-config .table-input::placeholder {
-        color: rgba(255, 255, 255, 0.45);
+        color: rgba(255, 255, 255, 0.4);
       }
     </style>
   </head>
@@ -1022,6 +1049,7 @@
       <div class="drawer-body scrollable">
         <div class="drawer-section">
           <div class="drawer-section-title">Plan Basics</div>
+          <label class="drawer-label" for="plan-name-input">Plan name</label>
           <input class="drawer-input" type="text" id="plan-name-input" placeholder="Plan name" />
           <div class="drawer-helper">
             Trading Plans define which pairs can be used when creating autotraders.
@@ -1036,12 +1064,13 @@
         </div>
         <div class="drawer-section">
           <div class="drawer-section-title">Pair Universe Selection</div>
+          <div class="drawer-helper-emphasis">Select at least one pair.</div>
           <div class="pair-universe">
             <div class="pair-selected-row" id="pair-selected-row"></div>
             <div class="pair-selector-bar" id="pair-selector-bar">
               <div class="pair-selector-label">
                 <span class="pair-selector-dot">●</span>
-                <span id="pair-selector-count">0 pairs</span>
+                <span id="pair-selector-count">0 pairs selected</span>
                 <span class="pair-selector-meta" id="pair-selector-quote"></span>
               </div>
               <button class="pair-selector-action" type="button" id="pair-unselect-all">Unselect all (0)</button>
